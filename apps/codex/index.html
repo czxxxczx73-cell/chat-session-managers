@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codex 对话管理器</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --panel: #ffffff;
+    --border: #e3e6ea;
+    --text: #1c2024;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-soft: #e8f0fe;
+    --archive: #b45309;
+    --archive-soft: #fef3c7;
+    --danger: #dc2626;
+    --danger-soft: #fee2e2;
+    --green: #047857;
+    --green-soft: #d1fae5;
+    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --panel: #181b21;
+      --border: #2a2f37;
+      --text: #e6e8eb;
+      --muted: #9aa3af;
+      --accent: #5b9bff;
+      --accent-soft: #1b2740;
+      --archive: #fbbf24;
+      --archive-soft: #3a2d10;
+      --danger: #f87171;
+      --danger-soft: #3a1718;
+      --green: #34d399;
+      --green-soft: #12352a;
+      --shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--panel); border-bottom: 1px solid var(--border);
+    padding: 14px 22px; box-shadow: var(--shadow);
+  }
+  .titlebar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  h1 { font-size: 17px; margin: 0; font-weight: 650; }
+  .home { font-size: 12px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; }
+  .spacer { flex: 1; }
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  input[type=search] {
+    flex: 1; min-width: 200px; padding: 8px 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px;
+  }
+  input[type=search]:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+  .filters { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .filters button {
+    border: 0; background: var(--panel); color: var(--muted);
+    padding: 8px 14px; cursor: pointer; font-size: 13px; border-right: 1px solid var(--border);
+  }
+  .filters button:last-child { border-right: 0; }
+  .filters button.active { background: var(--accent); color: #fff; font-weight: 600; }
+  button.ghost {
+    border: 1px solid var(--border); background: var(--panel); color: var(--text);
+    padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  }
+  button.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  main { max-width: 1100px; margin: 18px auto; padding: 0 22px 60px; }
+  .stat { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 12px; box-shadow: var(--shadow);
+    display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: start;
+  }
+  .card .main { min-width: 0; }
+  .row1 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ttl { font-size: 15px; font-weight: 600; }
+  .badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap;
+  }
+  .badge.local { background: var(--green-soft); color: var(--green); }
+  .badge.arch  { background: var(--archive-soft); color: var(--archive); }
+  .badge.src   { background: var(--accent-soft); color: var(--accent); }
+  .meta { color: var(--muted); font-size: 12px; margin-top: 5px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .meta .cwd { font-family: ui-monospace, Menlo, monospace; }
+  .preview {
+    margin-top: 8px; color: var(--text); font-size: 13px; opacity: .82;
+    overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+  .actions { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+  .actions button {
+    border: 1px solid var(--border); background: var(--panel); color: var(--text);
+    padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; white-space: nowrap; min-width: 96px;
+  }
+  .actions button.archive:hover  { border-color: var(--archive); color: var(--archive); background: var(--archive-soft); }
+  .actions button.unarch:hover   { border-color: var(--green);   color: var(--green);   background: var(--green-soft); }
+  .actions button.danger:hover   { border-color: var(--danger);  color: var(--danger);  background: var(--danger-soft); }
+  .empty, .loading { text-align: center; color: var(--muted); padding: 60px 0; }
+  #banner {
+    display: none; margin-top: 12px; padding: 10px 14px; border-radius: 8px;
+    background: var(--archive-soft); color: var(--archive); font-size: 13px;
+    border: 1px solid var(--archive); line-height: 1.5;
+  }
+  #banner.show { display: block; }
+  #banner b { font-weight: 700; }
+  .id { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--muted); }
+  /* toast */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 10px;
+    font-size: 13px; box-shadow: 0 6px 24px rgba(0,0,0,.25); opacity: 0; pointer-events: none;
+    transition: opacity .25s, transform .25s; max-width: 80vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  #toast.err { background: var(--danger); color: #fff; }
+  /* modal */
+  #overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none;
+    align-items: center; justify-content: center; z-index: 50;
+  }
+  #overlay.show { display: flex; }
+  .modal {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    padding: 22px; max-width: 420px; width: 90%; box-shadow: 0 16px 50px rgba(0,0,0,.4);
+  }
+  .modal h3 { margin: 0 0 8px; font-size: 16px; }
+  .modal p { color: var(--muted); margin: 0 0 18px; font-size: 13px; }
+  .modal .mttl { color: var(--text); font-weight: 600; }
+  .modal .btns { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal button { padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; border: 1px solid var(--border); background: var(--panel); color: var(--text); }
+  .modal button.confirm { background: var(--danger); color: #fff; border-color: var(--danger); font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <div class="titlebar">
+    <h1>📁 Codex 对话管理器</h1>
+    <span class="home" id="home"></span>
+    <span class="spacer"></span>
+    <button class="ghost" id="refresh">↻ 刷新</button>
+  </div>
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="搜索标题 / 目录(cwd) / 预览内容 …" autocomplete="off">
+    <div class="filters" id="filters">
+      <button data-f="all" class="active">全部</button>
+      <button data-f="local">本地</button>
+      <button data-f="archived">归档</button>
+    </div>
+  </div>
+  <div id="banner">
+    ⚠️ <b>检测到 Codex Desktop 正在运行。</b>
+    删除/归档<b>已同步云端</b>的会话可能被实时同步「还原」（看起来像没删掉）。
+    若要让删除永久生效，建议先<b>退出 Codex Desktop</b> 再操作。纯本地会话不受影响。
+  </div>
+</header>
+
+<main>
+  <div class="stat" id="stat"></div>
+  <div id="list"><div class="loading">加载中…</div></div>
+</main>
+
+<div id="toast"></div>
+
+<div id="overlay">
+  <div class="modal">
+    <h3 id="m-title">确认</h3>
+    <p id="m-body"></p>
+    <div class="btns">
+      <button id="m-cancel">取消</button>
+      <button id="m-ok" class="confirm">确定</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let ALL = [];
+let filter = "all";
+let query = "";
+let DESKTOP = false;
+
+const $ = (s) => document.querySelector(s);
+
+function fmtDate(s, mtime) {
+  let d = s ? new Date(s) : (mtime ? new Date(mtime * 1000) : null);
+  if (!d || isNaN(d)) return "—";
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function fmtSize(b) {
+  if (!b) return "0 B";
+  const u = ["B","KB","MB","GB"]; let i = 0;
+  while (b >= 1024 && i < u.length-1) { b /= 1024; i++; }
+  return `${b.toFixed(b < 10 && i > 0 ? 1 : 0)} ${u[i]}`;
+}
+function esc(s) {
+  return (s ?? "").replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+}
+function shortCwd(p) {
+  if (!p) return "—";
+  return p.replace(/^\/Users\/[^/]+/, "~");
+}
+
+function toast(msg, isErr) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.className = "show" + (isErr ? " err" : "");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => (t.className = ""), 2600);
+}
+
+async function load() {
+  $("#list").innerHTML = '<div class="loading">加载中…</div>';
+  try {
+    const r = await fetch("/api/sessions");
+    const data = await r.json();
+    if (!data.ok) throw new Error(data.error || "加载失败");
+    ALL = data.sessions || [];
+    DESKTOP = !!data.desktop_running;
+    $("#home").textContent = data.codex_home || "";
+    $("#banner").classList.toggle("show", DESKTOP);
+    if (!data.codex_bin) toast("未找到 codex 命令，归档/删除将不可用", true);
+    render();
+  } catch (e) {
+    $("#list").innerHTML = `<div class="empty">加载失败：${esc(e.message)}</div>`;
+  }
+}
+
+function render() {
+  const q = query.trim().toLowerCase();
+  let items = ALL.filter((s) => {
+    if (filter === "local" && s.archived) return false;
+    if (filter === "archived" && !s.archived) return false;
+    if (!q) return true;
+    return (s.title + " " + s.cwd + " " + s.preview + " " + s.id).toLowerCase().includes(q);
+  });
+
+  const nLocal = ALL.filter((s) => !s.archived).length;
+  const nArch = ALL.filter((s) => s.archived).length;
+  $("#stat").textContent = `共 ${ALL.length} 条　·　本地 ${nLocal}　·　归档 ${nArch}　·　当前显示 ${items.length}`;
+
+  if (!items.length) {
+    $("#list").innerHTML = '<div class="empty">没有匹配的对话。</div>';
+    return;
+  }
+
+  $("#list").innerHTML = items.map(cardHTML).join("");
+  document.querySelectorAll("[data-act]").forEach((btn) => {
+    btn.addEventListener("click", () => onAction(btn.dataset.act, btn.dataset.id));
+  });
+}
+
+function cardHTML(s) {
+  const badge = s.archived
+    ? '<span class="badge arch">已归档</span>'
+    : '<span class="badge local">本地</span>';
+  const src = s.source ? `<span class="badge src">${esc(s.source)}</span>` : "";
+  const turns = `💬 ${s.user_turns}/${s.assistant_turns} 轮`;
+  const actBtn = s.archived
+    ? `<button class="unarch" data-act="unarchive" data-id="${s.id}">↩︎ 取消归档</button>`
+    : `<button class="archive" data-act="archive" data-id="${s.id}">📦 归档</button>`;
+  return `
+  <div class="card">
+    <div class="main">
+      <div class="row1">
+        <span class="ttl">${esc(s.title)}</span> ${badge} ${src}
+      </div>
+      <div class="meta">
+        <span>🕘 ${fmtDate(s.updated_at, s.mtime)}</span>
+        <span class="cwd">📂 ${esc(shortCwd(s.cwd))}</span>
+        <span>${turns}</span>
+        <span>${fmtSize(s.size)}</span>
+        <span class="id">${esc(s.id)}</span>
+      </div>
+      ${s.preview ? `<div class="preview">${esc(s.preview)}</div>` : ""}
+    </div>
+    <div class="actions">
+      ${actBtn}
+      <button class="danger" data-act="delete" data-id="${s.id}">🗑 删除</button>
+    </div>
+  </div>`;
+}
+
+function confirmModal(title, bodyHTML) {
+  return new Promise((resolve) => {
+    $("#m-title").textContent = title;
+    $("#m-body").innerHTML = bodyHTML;
+    $("#overlay").classList.add("show");
+    const ok = $("#m-ok"), cancel = $("#m-cancel");
+    const done = (v) => {
+      $("#overlay").classList.remove("show");
+      ok.onclick = cancel.onclick = null;
+      resolve(v);
+    };
+    ok.onclick = () => done(true);
+    cancel.onclick = () => done(false);
+  });
+}
+
+async function onAction(action, id) {
+  const s = ALL.find((x) => x.id === id);
+  const title = s ? s.title : id;
+
+  if (action === "delete") {
+    const desktopWarn = DESKTOP
+      ? `<br><br>⚠️ <b>Codex Desktop 正在运行</b>：若该会话已同步云端，删除后可能被同步还原。要永久删除请先退出 Desktop。`
+      : "";
+    const ok = await confirmModal(
+      "删除这条对话？",
+      `将删除 <span class="mttl">「${esc(title)}」</span> 并从列表移除。<br><br>删除前会自动备份到 <code>~/.codex/deleted_sessions/</code>（可手动找回），并不是彻底抹除。${desktopWarn}`
+    );
+    if (!ok) return;
+  }
+
+  const labels = { archive: "归档", unarchive: "取消归档", delete: "删除" };
+  try {
+    const r = await fetch("/api/action", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action, id }),
+    });
+    const data = await r.json();
+    if (data.ok) {
+      toast(`已${labels[action]}：${title}`);
+      await load();
+    } else {
+      toast(`${labels[action]}失败：${esc(data.error || data.stderr || "未知错误")}`, true);
+    }
+  } catch (e) {
+    toast(`${labels[action]}失败：${e.message}`, true);
+  }
+}
+
+$("#refresh").onclick = load;
+$("#q").addEventListener("input", (e) => { query = e.target.value; render(); });
+$("#filters").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  filter = b.dataset.f;
+  document.querySelectorAll("#filters button").forEach((x) => x.classList.toggle("active", x === b));
+  render();
+});
+$("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") $("#overlay").classList.remove("show"); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("#overlay").classList.remove("show"); });
+
+load();
+</script>
+</body>
+</html>
