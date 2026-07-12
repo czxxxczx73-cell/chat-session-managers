@@ -18,6 +18,7 @@ import shutil
 import subprocess
 import sys
 import threading
+import time
 import webbrowser
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -369,12 +370,27 @@ def create_server(port):
     return ThreadingHTTPServer((HOST, port), Handler)
 
 
+def monitor_parent(server):
+    """Stop the loopback service if its native host exits unexpectedly."""
+    expected = int(os.environ.get("SESSION_MANAGER_PARENT_PID", "0") or "0")
+    if not expected:
+        return
+
+    def watch():
+        while os.getppid() == expected:
+            time.sleep(0.5)
+        server.shutdown()
+
+    threading.Thread(target=watch, daemon=True).start()
+
+
 def main():
     if not INDEX_HTML.exists():
         print("警告：缺少 index.html，页面无法显示。", file=sys.stderr)
     if not CODEX_HOME.exists():
         print(f"警告：未找到 CODEX_HOME 目录：{CODEX_HOME}", file=sys.stderr)
     server = create_server(PORT)
+    monitor_parent(server)
     url = f"http://{HOST}:{PORT}/"
     print("=" * 48)
     print(" Codex 对话管理器 已启动")
@@ -383,7 +399,8 @@ def main():
     print(f"   codex 命令: {CODEX_BIN or '未找到（归档/删除将不可用）'}")
     print("   按 Ctrl+C 退出")
     print("=" * 48)
-    threading.Timer(0.6, lambda: webbrowser.open(url)).start()
+    if os.environ.get("SESSION_MANAGER_EMBEDDED") != "1":
+        threading.Timer(0.6, lambda: webbrowser.open(url)).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:

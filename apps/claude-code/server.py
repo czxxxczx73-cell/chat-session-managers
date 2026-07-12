@@ -484,7 +484,9 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/sessions":
             try:
                 desktop = load_desktop_sessions()
-                sync = sync_extras(desktop)  # 自动对齐：本地多余的会话删掉
+                # 刷新必须保持只读：展示 Desktop 与本地记录，但绝不因为
+                # Desktop 登记区暂时缺少某条记录，就自动删除本地 transcript。
+                sync = {"deleted": 0, "backed_up": 0}
                 self._json(
                     200,
                     {
@@ -558,12 +560,27 @@ def create_server(port):
     return ThreadingHTTPServer((HOST, port), Handler)
 
 
+def monitor_parent(server):
+    """Stop the loopback service if its native host exits unexpectedly."""
+    expected = int(os.environ.get("SESSION_MANAGER_PARENT_PID", "0") or "0")
+    if not expected:
+        return
+
+    def watch():
+        while os.getppid() == expected:
+            time.sleep(0.5)
+        server.shutdown()
+
+    threading.Thread(target=watch, daemon=True).start()
+
+
 def main():
     if not INDEX_HTML.exists():
         print("警告：缺少 index.html，页面无法显示。", file=sys.stderr)
     if not PROJECTS_DIR.exists():
         print(f"警告：未找到会话目录：{PROJECTS_DIR}", file=sys.stderr)
     server = create_server(PORT)
+    monitor_parent(server)
     url = f"http://{HOST}:{PORT}/"
     print("=" * 48)
     print(" Claude Code 对话管理器 已启动")
@@ -571,7 +588,8 @@ def main():
     print(f"   CLAUDE_HOME: {CLAUDE_HOME}")
     print("   按 Ctrl+C 退出")
     print("=" * 48)
-    threading.Timer(0.6, lambda: webbrowser.open(url)).start()
+    if os.environ.get("SESSION_MANAGER_EMBEDDED") != "1":
+        threading.Timer(0.6, lambda: webbrowser.open(url)).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:

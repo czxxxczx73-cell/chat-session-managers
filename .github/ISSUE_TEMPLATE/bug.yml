@@ -1,0 +1,39 @@
+name: Bug report
+description: Report a reproducible problem without sharing private conversations.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: App
+      options: [Codex Session Manager, Claude Code Session Manager, Grok Session Manager]
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS, Mac architecture, and Python version
+      placeholder: macOS 15.5, Apple Silicon, Python 3.13
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened?
+      description: Use fictional or sanitized examples only. Never attach real conversation files.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed conversation content, credentials, usernames, and personal paths.
+          required: true
