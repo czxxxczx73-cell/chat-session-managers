@@ -1,83 +1,96 @@
-[English](./README.en.md) | 中文
+English | [中文](./README.zh-CN.md)
 
-# 对话管理器（Codex / Claude Code / Grok）
+# Chat Session Managers (Codex / Claude Code / Grok)
 
-三个本地小工具，分别用来查看 **Codex**、**Claude Code**、**Grok** 这三个 CLI 工具在你电脑上留下的对话历史，并直接在界面里完成归档 / 取消归档 / 删除。全部在本机运行，不联网、不上传任何对话内容。
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+![Platform](https://img.shields.io/badge/platform-macOS-lightgrey.svg)
+![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)
+![Network](https://img.shields.io/badge/network-100%25%20offline%20at%20runtime-success.svg)
 
-> 每台电脑第一次运行 `build.sh` 时，会用**这台电脑自己的** Python 现装一份依赖，
-> 生成的 App 只属于这台电脑——不是下载别人打包好的东西，也不会残留原作者电脑上的任何路径。
+Three small local tools for browsing the conversation history that **Codex**, **Claude Code**, and **Grok** leave on your own machine, with archive / unarchive / delete actions built right into the UI. Everything runs locally — no network access at runtime, no conversation content ever leaves your computer.
 
-## 快速开始
+> The first time you run `build.sh` on any Mac, it installs its dependencies fresh **using that machine's own Python**. The resulting App belongs only to that machine — you're not downloading someone else's prebuilt binary, and nothing from the original author's computer (paths, architecture, anything) is baked in.
+
+## Screenshots
+
+*(All content shown below is fictional demo data generated for these screenshots — not anyone's real conversations.)*
+
+| Codex | Claude Code | Grok |
+|---|---|---|
+| ![Codex screenshot](./docs/screenshots/codex.png) | ![Claude Code screenshot](./docs/screenshots/claude-code.png) | ![Grok screenshot](./docs/screenshots/grok.png) |
+
+## Quickstart
 
 ```bash
-git clone <这个仓库的地址>
+git clone <this repo's URL>
 cd chat-session-managers
 bash build.sh
 ```
 
-跑完之后，桌面上会出现三个 App：
+When it finishes, three Apps appear on your Desktop:
 
 - **Codex 对话管理器.app**
 - **Claude Code 对话管理器.app**
 - **Grok 对话管理器.app**
 
-双击打开即可。首次打开如果 macOS 提示"无法验证开发者"：右键点 App → 打开 → 再点一次"打开"确认——这是本地 ad-hoc 签名、没做 Apple 公证的正常提示（个人小工具没有 Apple 开发者账号，这一步免不了），确认一次之后就能正常双击了。
+Just double-click to open. If macOS says "cannot verify developer" the first time: right-click the App → Open → click "Open" again to confirm. That's the normal message for a locally ad-hoc-signed app that hasn't been notarized by Apple (a personal tool like this doesn't have an Apple Developer account) — after confirming once, double-clicking works normally from then on.
 
-只想装其中一个/两个：
+Only want one or two of them:
 
 ```bash
-bash build.sh codex              # 只生成 Codex 对话管理器
-bash build.sh claude-code grok   # 只生成这两个
+bash build.sh codex              # only build the Codex manager
+bash build.sh claude-code grok   # only build these two
 ```
 
-### 环境要求
+### Requirements
 
-- **macOS 11 及以上**（用到了 macOS 专属的 `pywebview` + `pyobjc` 做原生窗口，Windows / Linux 无法运行）
-- **Python 3.9+**（推荐 `brew install python@3.14`；用系统自带的 `python3` 也可以）
-- 第一次构建需要联网（现装 `pywebview` + `pyobjc`，约 1-2 分钟）；之后重复构建会复用 `.build/` 里的缓存，不用重新下载
+- **macOS 11 or later** (uses macOS-only `pywebview` + `pyobjc` for the native window; won't run on Windows/Linux)
+- **Python 3.9+** (`brew install python@3.14` recommended; the system's built-in `python3` also works)
+- The first build needs internet access (to install `pywebview` + `pyobjc`, roughly 1-2 minutes); later rebuilds reuse the `.build/` cache and skip re-downloading
 
-## 这三个 App 分别看什么
+## What each App looks at
 
-| App | 数据来源 | 归档/删除的实现方式 |
+| App | Data source | How archive/delete is implemented |
 |---|---|---|
-| **Codex** | `~/.codex/sessions`、`~/.codex/archived_sessions` | 调用官方 `codex archive / unarchive / delete` 命令，保证内部索引不错乱 |
-| **Claude Code** | `~/.claude/projects/**/*.jsonl` | 无对应 CLI 命令，本工具直接搬文件：归档 = 移到 `~/.claude/projects_archived/`；删除前自动备份到 `~/.claude/deleted_sessions/` |
-| **Grok** | `~/.grok` | 同 Claude Code，文件级操作 + 自动备份 |
+| **Codex** | `~/.codex/sessions`, `~/.codex/archived_sessions` | Calls the official `codex archive / unarchive / delete` commands, so internal indexes never get out of sync |
+| **Claude Code** | `~/.claude/projects/**/*.jsonl` | No corresponding CLI command exists, so this tool moves files directly: archive = move to `~/.claude/projects_archived/`; delete auto-backs-up to `~/.claude/deleted_sessions/` first |
+| **Grok** | `~/.grok` | Same approach as Claude Code — file-level operations with automatic backup |
 
-三个 App 的通用功能：查看（标题/更新时间/目录/来源/预览）、按标题或内容搜索、按状态筛选、归档/取消归档/删除（删除都是先备份再删，从不硬删）。
+Shared features across all three: browse (title/updated time/directory/source/preview), search by title or content, filter by status, archive/unarchive/delete (deletes always back up first — nothing is ever hard-deleted).
 
-## 项目结构
+## Project layout
 
 ```
 chat-session-managers/
-├── build.sh                生成 App 的脚本（在自己电脑上跑）
+├── build.sh                Generates the Apps (run this on your own machine)
 ├── common/
-│   └── launcher.template   App 启动脚本的模板，build.sh 会往里填本机 Python 路径
+│   └── launcher.template   Template for each App's launcher script; build.sh fills in the local Python path
 └── apps/
     ├── codex/
-    │   ├── app.py          桌面窗口入口（pywebview）
-    │   ├── server.py       本地 HTTP 服务 + 读取/操作逻辑
-    │   ├── index.html      前端界面（单文件）
-    │   ├── Info.plist      App 的元信息（名称/图标/Bundle ID）
+    │   ├── app.py          Desktop window entry point (pywebview)
+    │   ├── server.py       Local HTTP server + read/action logic
+    │   ├── index.html      Frontend UI (single file)
+    │   ├── Info.plist      App metadata (name/icon/bundle ID)
     │   └── icon.icns
-    ├── claude-code/  （同上结构）
-    └── grok/         （同上结构）
+    ├── claude-code/  (same layout as above)
+    └── grok/         (same layout as above)
 ```
 
-`build.sh` 做的事情：找一个能用的系统 Python → 建一个隔离环境装好 `pywebview`+`pyobjc` → 把每个 `apps/<name>/` 的代码 + 这个隔离环境 + 图标，组装成标准 `.app` 结构 → 本地 ad-hoc 签名。全程不写入任何绝对路径到 git 里，构建产物也不提交（见 `.gitignore`）。
+What `build.sh` does: finds a usable system Python → creates an isolated environment with `pywebview`+`pyobjc` installed → assembles each `apps/<name>/`'s code + that isolated environment + icon into a standard `.app` bundle → signs it locally (ad-hoc). At no point does it write any absolute path into git, and build output isn't committed either (see `.gitignore`).
 
-## 安全说明
+## Security notes
 
-- **完全本地运行，运行期零外部网络请求。** 三个 App 的 `server.py` / `app.py` / `index.html` 里没有任何指向非 localhost 的 `http(s)://` 调用、没有 CDN/外部字体/第三方脚本引用、没有任何埋点或错误上报 SDK——可以自己 `grep -rE "https?://" apps/` 验证，能看到的只有本机地址（`127.0.0.1:端口`）和 XML 命名空间字符串，别无其他。
-- 后端只监听 `127.0.0.1`，不对外暴露局域网/公网
-- 唯一需要联网的时刻是**首次运行 `build.sh`**，用来从 PyPI 下载 `pywebview`/`pyobjc` 这两个公开依赖包；这是构建期行为，和 App 运行时读取/展示你的对话数据是两回事，App 本身运行时不联网
-- 所有删除操作都先备份、再操作，误删可以手动找回
-- 会话 id 经过严格校验后才传给子进程（参数数组，非 shell 字符串拼接），不存在命令注入风险
+- **Fully local, zero outbound network calls at runtime.** None of the three Apps' `server.py` / `app.py` / `index.html` contain any `http(s)://` call pointing outside localhost, no CDN/external-font/third-party-script references, and no analytics or error-reporting SDK of any kind. You can verify this yourself with `grep -rE "https?://" apps/` — the only matches are local addresses (`127.0.0.1:<port>`) and XML namespace strings, nothing else.
+- The backend only listens on `127.0.0.1` — never exposed to your LAN or the public internet.
+- The only moment that needs internet access is **the first run of `build.sh`**, which downloads the two public packages `pywebview`/`pyobjc` from PyPI. That's a build-time action, separate from the App actually reading/displaying your conversation data — the App itself makes no network calls while running.
+- Every data source each app reads is consistently overridable via its own env var (`CODEX_HOME`, `CLAUDE_CONFIG_DIR` + `CLAUDE_DESKTOP_SESSIONS_DIR`, `GROK_HOME`) — useful for testing with isolated/fake data instead of your real history. This was tightened after an internal review found the Claude Code app had one hardcoded path that didn't respect the override; it's now fixed and consistent with the other two apps.
+- Every delete backs up first, then acts — an accidental delete can always be recovered by hand.
+- Session IDs are strictly validated before being passed to subprocesses (as an argument array, never a shell string), so there's no command-injection risk.
 
-## 已知限制
+## Known limitation
 
-**Codex：云同步可能"撤销"删除。** 如果 Codex/ChatGPT Desktop 客户端正在运行，且该会话已同步到云端，本地删除/归档可能被云同步重新拉回本地。要让删除永久生效：退出 Desktop 客户端后再删，和/或去云端一侧删除该会话（CLI 无对应命令）。本工具的写操作都会先备份，即使被同步还原也不会丢数据。
+**Codex: cloud sync can "undo" a delete.** If the Codex/ChatGPT Desktop client is running and a session has already synced to the cloud, a local delete/archive may get pulled back down by cloud sync — it'll look like "the delete failed / it came back." To make a delete on a cloud-synced session permanent: quit the Desktop client before deleting with this tool, and/or delete the session on the cloud side (there's no CLI command for that). This tool's write operations always back up first, so even if sync restores a file, no data is lost.
 
 ## License
 
-MIT，见 [LICENSE](./LICENSE)。
+MIT — see [LICENSE](./LICENSE).

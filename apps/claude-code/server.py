@@ -41,8 +41,17 @@ DELETED_DIR = CLAUDE_HOME / "deleted_sessions"     # 本工具自建的删除备
 # Claude 桌面端 App 的会话登记区（macOS）。每个会话一个 local_*.json，
 # 其中 cliSessionId 对应 projects/ 下 .jsonl 的文件名（会话 id），
 # 据此可判断一条会话是「仅本地 / 仅桌面端 / 都有」。
-DESKTOP_SESSIONS_DIR = (
-    Path.home() / "Library" / "Application Support" / "Claude" / "claude-code-sessions"
+#
+# 支持用 CLAUDE_DESKTOP_SESSIONS_DIR 单独覆盖：CLAUDE_CONFIG_DIR 只改
+# ~/.claude（projects/归档/删除备份），这个是桌面端 App 自己的 Application
+# Support 目录，路径结构完全不同，必须有自己独立的覆盖开关——否则单独设置
+# CLAUDE_CONFIG_DIR（比如指向一份隔离的测试/演示数据）时，这里仍会读到真实
+# 桌面端会话的标题/目录/轮数等元数据，造成数据没有真正隔离。
+DESKTOP_SESSIONS_DIR = Path(
+    os.environ.get(
+        "CLAUDE_DESKTOP_SESSIONS_DIR",
+        str(Path.home() / "Library" / "Application Support" / "Claude" / "claude-code-sessions"),
+    )
 )
 
 HERE = Path(__file__).resolve().parent
