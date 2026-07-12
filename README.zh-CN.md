@@ -1,99 +1,80 @@
-[English](./README.md) | 中文
+[English](./README.md) | [中文](./README.zh-CN.md)
 
-# 对话管理器（Codex / Claude Code / Grok）
+# macOS 对话管理器
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-![Platform](https://img.shields.io/badge/platform-macOS-lightgrey.svg)
-![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)
-![Network](https://img.shields.io/badge/network-100%25%20offline%20at%20runtime-success.svg)
+[![CI](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml/badge.svg)](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/czxxxczx73-cell/chat-session-managers)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+[![macOS](https://img.shields.io/badge/macOS-13%2B-111111?logo=apple)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+[![Universal](https://img.shields.io/badge/Universal-Apple%20Silicon%20%2B%20Intel-3a7bd5)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+[![Local only](https://img.shields.io/badge/privacy-local%20only-2ea44f)](./PRIVACY.md)
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-三个本地小工具，分别用来查看 **Codex**、**Claude Code**、**Grok** 这三个 CLI 工具在你电脑上留下的对话历史，并直接在界面里完成归档 / 取消归档 / 删除。全部在本机运行，不联网、不上传任何对话内容。
-
-> 每台电脑第一次运行 `build.sh` 时，会用**这台电脑自己的** Python 现装一份依赖，
-> 生成的 App 只属于这台电脑——不是下载别人打包好的东西，也不会残留原作者电脑上的任何路径。
-
-## 界面截图
-
-*(以下截图内容全部是为了演示专门造的虚构示例数据，不是任何人的真实对话。)*
+三款专门管理本地对话历史的 macOS App，分别支持 **Codex、Claude Code、Grok**。发布版换成了轻量 Universal 2 原生宿主，但完整保留原来的卡片式界面和排版。
 
 | Codex | Claude Code | Grok |
 |---|---|---|
-| ![Codex 截图](./docs/screenshots/zh/codex.png) | ![Claude Code 截图](./docs/screenshots/zh/claude-code.png) | ![Grok 截图](./docs/screenshots/zh/grok.png) |
+| ![Codex 对话管理器](./docs/screenshots/zh/codex.png) | ![Claude Code 对话管理器](./docs/screenshots/zh/claude-code.png) | ![Grok 对话管理器](./docs/screenshots/zh/grok.png) |
 
-> **界面本身也是中英双语的**——会自动跟随你系统/浏览器的语言,不用手动选(上面是中文截图；[英文 README](./README.md) 里放的是英文界面截图)。如果自动识别的语言不是你想要的,在地址栏 URL 后面加 `?lang=zh` 或 `?lang=en` 可以强制指定。
+所有截图均为虚构演示数据。界面会自动跟随 macOS / 浏览器语言，完整支持简体中文和英文。
 
-## 快速开始
+## 直接下载
 
-```bash
-git clone <这个仓库的地址>
-cd chat-session-managers
-bash build.sh
-```
+1. 打开 [最新 Release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)。
+2. 下载 `Chat-Session-Managers-v2.0.0-universal.zip`。
+3. 解压后，把需要的 App 拖入“应用程序”。
+4. 当前为本地签名、未做 Apple 公证，因此首次启动可能需要 **右键 App → 打开**。
 
-跑完之后，桌面上会出现三个 App：
+同一个发布包原生支持 Apple 芯片和 Intel Mac。轻量宿主不再打包 pywebview/pyobjc，但本机需要有 **Python 3.9 或更高版本**；程序会自动查找 Homebrew、python.org 和系统常见安装位置。
 
-- **Codex 对话管理器.app**
-- **Claude Code 对话管理器.app**
-- **Grok 对话管理器.app**
+如果你更希望所有内容都在自己的 Mac 上生成，Release 还提供 `Chat-Session-Managers-Local-Installer-v2.0.0.zip`。解压后双击 `Build Apps.command`，它会在本机生成原来的 pywebview 版本。
 
-双击打开即可。首次打开如果 macOS 提示"无法验证开发者"：右键点 App → 打开 → 再点一次"打开"确认——这是本地 ad-hoc 签名、没做 Apple 公证的正常提示（个人小工具没有 Apple 开发者账号，这一步免不了），确认一次之后就能正常双击了。
+## 本地与隐私
 
-只想装其中一个/两个：
+- 没有分析、遥测、账户系统、云端数据库、CDN 或外部网络请求
+- WebKit 宿主禁止跳转到 `127.0.0.1` / `localhost` 以外的地址
+- Python 服务只监听随机的本机回环端口，并跟随父 App 退出
+- 搜索、筛选和刷新全部只读
+- 归档、恢复和删除必须显式点击按钮
+- 删除前会先创建可恢复的本地备份
+- Claude 刷新不会再根据 Desktop 登记区的临时差异自动删除 transcript
 
-```bash
-bash build.sh codex              # 只生成 Codex 对话管理器
-bash build.sh claude-code grok   # 只生成这两个
-```
+详见 [PRIVACY.md](./PRIVACY.md) 和 [SECURITY.md](./SECURITY.md)。
 
-### 环境要求
+## 功能
 
-- **macOS 11 及以上**（用到了 macOS 专属的 `pywebview` + `pyobjc` 做原生窗口，Windows / Linux 无法运行）
-- **Python 3.9+**（推荐 `brew install python@3.14`；用系统自带的 `python3` 也可以）
-- 第一次构建需要联网（现装 `pywebview` + `pyobjc`，约 1-2 分钟）；之后重复构建会复用 `.build/` 里的缓存，不用重新下载
+- 按标题、目录和预览内容搜索
+- 按工程、归档状态和来源筛选
+- 查看标题、时间、路径、轮数、模型、版本和预览
+- 支持批量选择（对应 App 支持时）
+- 归档、恢复和先备份后删除
+- 检测正在运行的 Codex / Claude Code 会话并显示冲突提示
+- 完整中英文界面
 
-## 这三个 App 分别看什么
-
-| App | 数据来源 | 归档/删除的实现方式 |
+| App | 本地数据来源 | 操作方式 |
 |---|---|---|
-| **Codex** | `~/.codex/sessions`、`~/.codex/archived_sessions` | 调用官方 `codex archive / unarchive / delete` 命令，保证内部索引不错乱 |
-| **Claude Code** | `~/.claude/projects/**/*.jsonl` | 无对应 CLI 命令，本工具直接搬文件：归档 = 移到 `~/.claude/projects_archived/`；删除前自动备份到 `~/.claude/deleted_sessions/` |
-| **Grok** | `~/.grok` | 同 Claude Code，文件级操作 + 自动备份 |
+| Codex | `~/.codex/sessions`、`~/.codex/archived_sessions` | 调用官方 `codex` 命令归档、恢复和删除 |
+| Claude Code | `~/.claude/projects/**/*.jsonl`，以及可选的 Claude Desktop 登记信息 | 在活动/归档目录之间移动所选 transcript；仅 Desktop 记录保持只读 |
+| Grok | `~/.grok/sessions` | 在活动/归档目录之间移动所选会话目录 |
 
-三个 App 的通用功能：查看（标题/更新时间/目录/来源/预览）、按标题或内容搜索、按状态筛选、归档/取消归档/删除（删除都是先备份再删，从不硬删）。
+删除前的备份保存在每个工具本地的 `deleted_sessions` 目录。
 
-## 项目结构
+## UI 排版被严格锁定
 
-```
-chat-session-managers/
-├── build.sh                生成 App 的脚本（在自己电脑上跑）
-├── common/
-│   └── launcher.template   App 启动脚本的模板，build.sh 会往里填本机 Python 路径
-└── apps/
-    ├── codex/
-    │   ├── app.py          桌面窗口入口（pywebview）
-    │   ├── server.py       本地 HTTP 服务 + 读取/操作逻辑
-    │   ├── index.html      前端界面（单文件）
-    │   ├── Info.plist      App 的元信息（名称/图标/Bundle ID）
-    │   └── icon.icns
-    ├── claude-code/  （同上结构）
-    └── grok/         （同上结构）
+三份 `index.html` 与 Claude 发布的卡片式排版逐字节一致。CI 会校验 SHA-1，只要内部视觉结构发生变化就直接失败。2.0 版改变的是宿主、打包、安全检查、语言元数据和 GitHub 发布体验，不是 App 里面的排版。
+
+## 构建与验证
+
+需要 macOS 13+、Xcode Command Line Tools 和 Python 3.9+。
+
+```bash
+git clone https://github.com/czxxxczx73-cell/chat-session-managers.git
+cd chat-session-managers
+make check test package installer
 ```
 
-`build.sh` 做的事情：找一个能用的系统 Python → 建一个隔离环境装好 `pywebview`+`pyobjc` → 把每个 `apps/<name>/` 的代码 + 这个隔离环境 + 图标，组装成标准 `.app` 结构 → 本地 ad-hoc 签名。全程不写入任何绝对路径到 git 里，构建产物也不提交（见 `.gitignore`）。
+- `make check`：锁定 UI，并检查本机路径、遥测和外部运行时 URL。
+- `make test`：使用隔离的虚构数据验证刷新只读。
+- `make package`：生成直接下载的 Universal 2 发布包。
+- `make installer`：生成“在自己的 Mac 上构建”的备用安装包。
 
-## 安全说明
-
-- **完全本地运行，运行期零外部网络请求。** 三个 App 的 `server.py` / `app.py` / `index.html` 里没有任何指向非 localhost 的 `http(s)://` 调用、没有 CDN/外部字体/第三方脚本引用、没有任何埋点或错误上报 SDK——可以自己 `grep -rE "https?://" apps/` 验证，能看到的只有本机地址（`127.0.0.1:端口`）和 XML 命名空间字符串，别无其他。
-- 后端只监听 `127.0.0.1`，不对外暴露局域网/公网
-- 唯一需要联网的时刻是**首次运行 `build.sh`**，用来从 PyPI 下载 `pywebview`/`pyobjc` 这两个公开依赖包；这是构建期行为，和 App 运行时读取/展示你的对话数据是两回事，App 本身运行时不联网
-- 每个 App 读取的数据源都有对应的环境变量可以整体覆盖（`CODEX_HOME`、`CLAUDE_CONFIG_DIR` + `CLAUDE_DESKTOP_SESSIONS_DIR`、`GROK_HOME`），方便用隔离的假数据测试而不碰你的真实历史。这一点是做这次审计时收紧的——发现 Claude Code 那个 App 里有一处路径没有跟着环境变量走（是硬编码的），已经修掉，现在三个 App 的覆盖机制是一致的。
-- 所有删除操作都先备份、再操作，误删可以手动找回
-- 会话 id 经过严格校验后才传给子进程（参数数组，非 shell 字符串拼接），不存在命令注入风险
-
-## 已知限制
-
-**Codex：云同步可能"撤销"删除。** 如果 Codex/ChatGPT Desktop 客户端正在运行，且该会话已同步到云端，本地删除/归档可能被云同步重新拉回本地。要让删除永久生效：退出 Desktop 客户端后再删，和/或去云端一侧删除该会话（CLI 无对应命令）。本工具的写操作都会先备份，即使被同步还原也不会丢数据。
-
-## License
-
-MIT，见 [LICENSE](./LICENSE)。
+欢迎贡献，参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。项目采用 [MIT](./LICENSE) 许可证。

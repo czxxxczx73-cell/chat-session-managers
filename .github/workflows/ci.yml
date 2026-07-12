@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate-release:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit and test read-only refresh
+        run: make check test
+      - name: Build both release formats
+        run: make package installer
+      - name: Verify artifacts
+        run: |
+          file dist/native/*.app/Contents/MacOS/SessionManagerHost
+          ls -lh dist/*.zip

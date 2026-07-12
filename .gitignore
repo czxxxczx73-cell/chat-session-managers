@@ -1,5 +1,7 @@
 # 构建时在本机生成的隔离环境（含编译后的依赖，不能跨机器复用，也不该进 git）
 .build/
+dist/
+.release-stage/
 venv/
 .venv/
 

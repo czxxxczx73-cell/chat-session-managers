@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit, test, and package
+        run: make check test package installer
+      - name: Publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          dist/Chat-Session-Managers-v2.0.0-universal.zip
+          dist/Chat-Session-Managers-Local-Installer-v2.0.0.zip
+          --repo "$GITHUB_REPOSITORY"
+          --title "Chat Session Managers 2.0.0"
+          --notes-file docs/release-notes-v2.0.0.md
