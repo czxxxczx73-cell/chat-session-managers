@@ -1,15 +1,20 @@
 [English](./README.md) | [中文](./README.zh-CN.md)
 
-# macOS 对话管理器
+# macOS 对话管理器 — Codex、Claude Code 与 Grok 本地历史
+
+![对话管理器社交预览](./docs/social-preview.png)
 
 [![CI](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml/badge.svg)](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/czxxxczx73-cell/chat-session-managers)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/czxxxczx73-cell/chat-session-managers/total)](https://github.com/czxxxczx73-cell/chat-session-managers/releases)
 [![macOS](https://img.shields.io/badge/macOS-13%2B-111111?logo=apple)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Universal](https://img.shields.io/badge/Universal-Apple%20Silicon%20%2B%20Intel-3a7bd5)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Local only](https://img.shields.io/badge/privacy-local%20only-2ea44f)](./PRIVACY.md)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 三款专门管理本地对话历史的 macOS App，分别支持 **Codex、Claude Code、Grok**。发布版换成了轻量 Universal 2 原生宿主，但完整保留原来的卡片式界面和排版。
+
+它不是把三种数据导入一个统一数据库，而是三款相互独立的轻量 App。每款都直接读取对应工具原有的本地格式，你只安装自己需要的，全部对话仍留在这台 Mac 上。
 
 | Codex | Claude Code | Grok |
 |---|---|---|
