@@ -67,12 +67,11 @@ Requirements: macOS 13+, Xcode Command Line Tools, and Python 3.9+.
 ```bash
 git clone https://github.com/czxxxczx73-cell/chat-session-managers.git
 cd chat-session-managers
-make check test package installer
+make check test package
 ```
 
 - `make check` locks the UI and audits paths, telemetry, and outbound runtime URLs.
 - `make test` verifies read-only refresh against isolated fictional fixtures.
-- `make package` creates the direct Universal 2 release.
-- `make installer` creates the build-on-your-own-Mac fallback.
+- `make package` creates the direct Universal 2 release, ready under `dist/`.
 
 Contributions are welcome; see [CONTRIBUTING.md](./CONTRIBUTING.md). Licensed under [MIT](./LICENSE).

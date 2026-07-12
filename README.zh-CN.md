@@ -67,12 +67,11 @@
 ```bash
 git clone https://github.com/czxxxczx73-cell/chat-session-managers.git
 cd chat-session-managers
-make check test package installer
+make check test package
 ```
 
 - `make check`：锁定 UI，并检查本机路径、遥测和外部运行时 URL。
 - `make test`：使用隔离的虚构数据验证刷新只读。
-- `make package`：生成直接下载的 Universal 2 发布包。
-- `make installer`：生成“在自己的 Mac 上构建”的备用安装包。
+- `make package`：生成直接下载的 Universal 2 发布包，产物在 `dist/` 下。
 
 欢迎贡献，参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。项目采用 [MIT](./LICENSE) 许可证。
