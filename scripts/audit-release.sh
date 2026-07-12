@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 "$ROOT/scripts/verify-app-format.sh"
 
 HOME_PATHS="$(rg -n '(/Users/[^/[:space:]]+|/home/[^/[:space:]]+)' \
-  "$ROOT/build.sh" "$ROOT/Build Apps.command" "$ROOT/common" "$ROOT/apps" \
+  "$ROOT/NativeHost" "$ROOT/apps" \
   | rg -v '/Users/alice|/home/alice' || true)"
 if [[ -n "$HOME_PATHS" ]]; then
   echo "$HOME_PATHS" >&2

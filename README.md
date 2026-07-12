@@ -25,13 +25,11 @@ All screenshots contain fictional demo data. The interface automatically follows
 ## Download
 
 1. Open the [latest release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest).
-2. Download `Chat-Session-Managers-v2.0.1-universal.zip`.
+2. Download the `Chat-Session-Managers-v<version>-universal.zip` asset.
 3. Unzip it and move any or all three Apps to `Applications`.
 4. On first launch, macOS may require **right-click → Open** because the Apps are ad-hoc signed rather than Apple-notarized.
 
 The same package runs on Apple Silicon and Intel Macs. The native host is compact and does not bundle pywebview/pyobjc. A locally installed **Python 3.9 or later** is required for the standard-library session service; common Homebrew, python.org, and system locations are detected automatically.
-
-Prefer to build everything on your own Mac? The Release also includes `Chat-Session-Managers-Local-Installer-v2.0.1.zip`. Unzip it and double-click `Build Apps.command`; it creates the original pywebview Apps locally on that computer.
 
 ## What stays local
 
@@ -74,12 +72,11 @@ Requirements: macOS 13+, Xcode Command Line Tools, and Python 3.9+.
 ```bash
 git clone https://github.com/czxxxczx73-cell/chat-session-managers.git
 cd chat-session-managers
-make check test package installer
+make check test package
 ```
 
 - `make check` locks the UI and audits paths, telemetry, and outbound runtime URLs.
 - `make test` verifies read-only refresh against isolated fictional fixtures.
-- `make package` creates the direct Universal 2 release.
-- `make installer` creates the build-on-your-own-Mac fallback.
+- `make package` creates the direct Universal 2 release, ready under `dist/`.
 
 Contributions are welcome; see [CONTRIBUTING.md](./CONTRIBUTING.md). Licensed under [MIT](./LICENSE).

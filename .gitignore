@@ -9,7 +9,7 @@ venv/
 __pycache__/
 *.pyc
 
-# 生成的 App 本体——每台机器应该自己跑 build.sh 生成，不提交打包好的产物
+# 生成的 App 本体——由 scripts/build-native.sh 现场生成，不提交打包好的产物
 *.app/
 
 # macOS / 编辑器杂项

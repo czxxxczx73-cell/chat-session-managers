@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Audit and test read-only refresh
         run: make check test
-      - name: Build both release formats
-        run: make package installer
+      - name: Build the release package
+        run: make package
       - name: Verify artifacts
         run: |
           file dist/native/*.app/Contents/MacOS/SessionManagerHost

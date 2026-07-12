@@ -11,6 +11,6 @@ Chat Session Managers works on local conversation files and is designed not to t
 - Claude refresh does not automatically delete local transcripts.
 - A parent-process monitor stops the loopback service if the native host exits unexpectedly.
 
-The direct release needs a local Python interpreter, but it does not download dependencies at runtime. The optional local builder downloads public pywebview/pyobjc packages from PyPI during the first build; the resulting Apps still operate locally.
+The release needs a local Python interpreter, but it does not download any dependency at runtime.
 
 Automated checks lock the existing UI files, reject user-specific absolute paths and external runtime URLs, and verify read-only refresh with fictional fixtures.

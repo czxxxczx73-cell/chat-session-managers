@@ -16,14 +16,13 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          VERSION="$VERSION" make check test package installer
+          VERSION="$VERSION" make check test package
       - name: Publish release assets
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
           gh release create "$GITHUB_REF_NAME"
           "dist/Chat-Session-Managers-v$VERSION-universal.zip"
-          "dist/Chat-Session-Managers-Local-Installer-v$VERSION.zip"
           --repo "$GITHUB_REPOSITORY"
           --title "Chat Session Managers $VERSION"
-          --notes-file "docs/release-notes-v$VERSION.md"
+          --notes-file docs/release-notes.md
