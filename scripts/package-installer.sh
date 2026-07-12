@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="${VERSION:-2.0.0}"
+VERSION="${VERSION:-2.0.1}"
 DIST="$ROOT/dist"
 STAGE="$ROOT/.release-stage/Chat Session Managers"
 ARCHIVE="$DIST/Chat-Session-Managers-Local-Installer-v$VERSION.zip"

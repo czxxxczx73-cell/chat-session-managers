@@ -20,13 +20,13 @@
 ## 直接下载
 
 1. 打开 [最新 Release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)。
-2. 下载 `Chat-Session-Managers-v2.0.0-universal.zip`。
+2. 下载 `Chat-Session-Managers-v2.0.1-universal.zip`。
 3. 解压后，把需要的 App 拖入“应用程序”。
 4. 当前为本地签名、未做 Apple 公证，因此首次启动可能需要 **右键 App → 打开**。
 
 同一个发布包原生支持 Apple 芯片和 Intel Mac。轻量宿主不再打包 pywebview/pyobjc，但本机需要有 **Python 3.9 或更高版本**；程序会自动查找 Homebrew、python.org 和系统常见安装位置。
 
-如果你更希望所有内容都在自己的 Mac 上生成，Release 还提供 `Chat-Session-Managers-Local-Installer-v2.0.0.zip`。解压后双击 `Build Apps.command`，它会在本机生成原来的 pywebview 版本。
+如果你更希望所有内容都在自己的 Mac 上生成，Release 还提供 `Chat-Session-Managers-Local-Installer-v2.0.1.zip`。解压后双击 `Build Apps.command`，它会在本机生成原来的 pywebview 版本。
 
 ## 本地与隐私
 

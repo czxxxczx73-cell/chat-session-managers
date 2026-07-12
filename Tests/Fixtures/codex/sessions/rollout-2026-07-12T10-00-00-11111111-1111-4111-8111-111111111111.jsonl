@@ -1,3 +1,4 @@
 {"type":"session_meta","payload":{"id":"11111111-1111-4111-8111-111111111111","timestamp":"2026-07-12T10:00:00Z","cwd":"/tmp/fixture-codex","originator":"codex"}}
+{"type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"text","text":"# AGENTS.md instructions\n\n<INSTRUCTIONS>\nInjected test context\n</INSTRUCTIONS>"}]}}
 {"type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"text","text":"Test the Codex fixture safely."}]}}
 {"type":"response_item","payload":{"type":"message","role":"assistant","content":[{"type":"text","text":"Fixture response."}]}}

@@ -13,14 +13,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Audit, test, and package
-        run: make check test package installer
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          VERSION="$VERSION" make check test package installer
       - name: Publish release assets
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
           gh release create "$GITHUB_REF_NAME"
-          dist/Chat-Session-Managers-v2.0.0-universal.zip
-          dist/Chat-Session-Managers-Local-Installer-v2.0.0.zip
+          "dist/Chat-Session-Managers-v$VERSION-universal.zip"
+          "dist/Chat-Session-Managers-Local-Installer-v$VERSION.zip"
           --repo "$GITHUB_REPOSITORY"
-          --title "Chat Session Managers 2.0.0"
-          --notes-file docs/release-notes-v2.0.0.md
+          --title "Chat Session Managers $VERSION"
+          --notes-file "docs/release-notes-v$VERSION.md"
