@@ -1,4 +1,4 @@
-.PHONY: check test build package installer
+.PHONY: check test build package
 
 check:
 	./scripts/audit-release.sh
@@ -11,6 +11,3 @@ build:
 
 package:
 	./scripts/package-native.sh
-
-installer:
-	./scripts/package-installer.sh
