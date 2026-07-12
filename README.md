@@ -17,7 +17,9 @@ Three small local tools for browsing the conversation history that **Codex**, **
 
 | Codex | Claude Code | Grok |
 |---|---|---|
-| ![Codex screenshot](./docs/screenshots/codex.png) | ![Claude Code screenshot](./docs/screenshots/claude-code.png) | ![Grok screenshot](./docs/screenshots/grok.png) |
+| ![Codex screenshot](./docs/screenshots/en/codex.png) | ![Claude Code screenshot](./docs/screenshots/en/claude-code.png) | ![Grok screenshot](./docs/screenshots/en/grok.png) |
+
+> The UI itself is bilingual too — it follows your system/browser language automatically (English shown above; see the [Chinese README](./README.zh-CN.md) for a 中文 screenshot). Force a language with `?lang=en` or `?lang=zh` in the address bar if you ever need to override the auto-detection.
 
 ## Quickstart
 

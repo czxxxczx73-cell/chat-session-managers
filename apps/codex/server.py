@@ -334,27 +334,29 @@ class Handler(BaseHTTPRequestHandler):
         try:
             body = json.loads(raw.decode("utf-8")) if raw else {}
         except (json.JSONDecodeError, UnicodeDecodeError):
-            self._json(400, {"ok": False, "error": "请求体解析失败"})
+            self._json(400, {"ok": False, "error": "请求体解析失败", "error_code": "bad_request"})
             return
 
         action = body.get("action")
         sid = body.get("id", "") or ""
         if action not in ("archive", "unarchive", "delete"):
-            self._json(400, {"ok": False, "error": "未知操作"})
+            self._json(400, {"ok": False, "error": "未知操作", "error_code": "unknown_action"})
             return
         if not UUID_RE.match(sid):
-            self._json(400, {"ok": False, "error": "非法会话 id"})
+            self._json(400, {"ok": False, "error": "非法会话 id", "error_code": "invalid_id"})
             return
         if not CODEX_BIN:
-            self._json(500, {"ok": False, "error": "找不到 codex 命令"})
+            self._json(500, {"ok": False, "error": "找不到 codex 命令", "error_code": "codex_bin_missing"})
             return
         try:
             result = perform_action(action, sid)
             if not result["ok"] and not result.get("error"):
                 result["error"] = (result.get("stderr") or "").strip() or "操作未生效"
+                if not (result.get("stderr") or "").strip():
+                    result["error_code"] = "action_no_effect"
             self._json(200 if result["ok"] else 500, result)
         except subprocess.TimeoutExpired:
-            self._json(500, {"ok": False, "error": "命令执行超时"})
+            self._json(500, {"ok": False, "error": "命令执行超时", "error_code": "timeout"})
         except Exception as e:  # noqa: BLE001
             self._json(500, {"ok": False, "error": str(e)})
 

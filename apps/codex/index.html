@@ -141,20 +141,20 @@
 <body>
 <header>
   <div class="titlebar">
-    <h1>📁 Codex 对话管理器</h1>
+    <h1>📁 <span data-i18n="appTitle">Codex 对话管理器</span></h1>
     <span class="home" id="home"></span>
     <span class="spacer"></span>
-    <button class="ghost" id="refresh">↻ 刷新</button>
+    <button class="ghost" id="refresh" data-i18n="refresh">↻ 刷新</button>
   </div>
   <div class="toolbar">
-    <input type="search" id="q" placeholder="搜索标题 / 目录(cwd) / 预览内容 …" autocomplete="off">
+    <input type="search" id="q" data-i18n-placeholder="searchPlaceholder" placeholder="搜索标题 / 目录(cwd) / 预览内容 …" autocomplete="off">
     <div class="filters" id="filters">
-      <button data-f="all" class="active">全部</button>
-      <button data-f="local">本地</button>
-      <button data-f="archived">归档</button>
+      <button data-f="all" class="active" data-i18n="filterAll">全部</button>
+      <button data-f="local" data-i18n="filterLocal">本地</button>
+      <button data-f="archived" data-i18n="filterArchived">归档</button>
     </div>
   </div>
-  <div id="banner">
+  <div id="banner" data-i18n-html="bannerDesktop">
     ⚠️ <b>检测到 Codex Desktop 正在运行。</b>
     删除/归档<b>已同步云端</b>的会话可能被实时同步「还原」（看起来像没删掉）。
     若要让删除永久生效，建议先<b>退出 Codex Desktop</b> 再操作。纯本地会话不受影响。
@@ -163,23 +163,105 @@
 
 <main>
   <div class="stat" id="stat"></div>
-  <div id="list"><div class="loading">加载中…</div></div>
+  <div id="list"><div class="loading" data-i18n="loading">加载中…</div></div>
 </main>
 
 <div id="toast"></div>
 
 <div id="overlay">
   <div class="modal">
-    <h3 id="m-title">确认</h3>
+    <h3 id="m-title" data-i18n="confirmTitle">确认</h3>
     <p id="m-body"></p>
     <div class="btns">
-      <button id="m-cancel">取消</button>
-      <button id="m-ok" class="confirm">确定</button>
+      <button id="m-cancel" data-i18n="cancel">取消</button>
+      <button id="m-ok" class="confirm" data-i18n="ok">确定</button>
     </div>
   </div>
 </div>
 
 <script>
+const LANG = (() => {
+  const qs = new URLSearchParams(location.search).get("lang");
+  if (qs === "zh" || qs === "en") return qs;
+  return ((navigator.language || "en").toLowerCase().startsWith("zh")) ? "zh" : "en";
+})();
+document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
+
+const T = {
+  zh: {
+    appTitle: "Codex 对话管理器",
+    refresh: "↻ 刷新",
+    searchPlaceholder: "搜索标题 / 目录(cwd) / 预览内容 …",
+    filterAll: "全部", filterLocal: "本地", filterArchived: "归档",
+    bannerDesktop: '⚠️ <b>检测到 Codex Desktop 正在运行。</b> 删除/归档<b>已同步云端</b>的会话可能被实时同步「还原」（看起来像没删掉）。若要让删除永久生效，建议先<b>退出 Codex Desktop</b> 再操作。纯本地会话不受影响。',
+    loading: "加载中…",
+    confirmTitle: "确认", cancel: "取消", ok: "确定",
+    loadFailed: (msg) => `加载失败：${msg}`,
+    codexBinMissing: "未找到 codex 命令，归档/删除将不可用",
+    stat: (total, local, arch, shown) => `共 ${total} 条　·　本地 ${local}　·　归档 ${arch}　·　当前显示 ${shown}`,
+    noMatch: "没有匹配的对话。",
+    badgeArchived: "已归档", badgeLocal: "本地",
+    turns: (u, a) => `💬 ${u}/${a} 轮`,
+    btnUnarchive: "↩︎ 取消归档", btnArchive: "📦 归档", btnDelete: "🗑 删除",
+    deleteTitle: "删除这条对话？",
+    deleteBody: (title, warn) => `将删除 <span class="mttl">「${title}」</span> 并从列表移除。<br><br>删除前会自动备份到 <code>~/.codex/deleted_sessions/</code>（可手动找回），并不是彻底抹除。${warn}`,
+    deleteDesktopWarn: '<br><br>⚠️ <b>Codex Desktop 正在运行</b>：若该会话已同步云端，删除后可能被同步还原。要永久删除请先退出 Desktop。',
+    actionLabels: { archive: "归档", unarchive: "取消归档", delete: "删除" },
+    actionDone: (label, title) => `已${label}：${title}`,
+    actionFailed: (label, msg) => `${label}失败：${msg}`,
+    unknownError: "未知错误",
+    errCodes: {
+      bad_request: "请求体解析失败", unknown_action: "未知操作", invalid_id: "非法会话 id",
+      codex_bin_missing: "找不到 codex 命令", action_no_effect: "操作未生效", timeout: "命令执行超时",
+    },
+  },
+  en: {
+    appTitle: "Codex Session Manager",
+    refresh: "↻ Refresh",
+    searchPlaceholder: "Search title / directory (cwd) / preview …",
+    filterAll: "All", filterLocal: "Local", filterArchived: "Archived",
+    bannerDesktop: '⚠️ <b>Codex Desktop is running.</b> Deleting/archiving a session that is already synced to the cloud may get "restored" by real-time sync (it can look like the delete didn\'t work). To make a delete permanent, <b>quit Codex Desktop</b> first. Purely local sessions are unaffected.',
+    loading: "Loading…",
+    confirmTitle: "Confirm", cancel: "Cancel", ok: "OK",
+    loadFailed: (msg) => `Failed to load: ${msg}`,
+    codexBinMissing: "codex command not found — archive/delete will be unavailable",
+    stat: (total, local, arch, shown) => `${total} total　·　${local} local　·　${arch} archived　·　${shown} shown`,
+    noMatch: "No matching conversations.",
+    badgeArchived: "Archived", badgeLocal: "Local",
+    turns: (u, a) => `💬 ${u}/${a} turns`,
+    btnUnarchive: "↩︎ Unarchive", btnArchive: "📦 Archive", btnDelete: "🗑 Delete",
+    deleteTitle: "Delete this conversation?",
+    deleteBody: (title, warn) => `This will delete <span class="mttl">"${title}"</span> and remove it from the list.<br><br>It's backed up to <code>~/.codex/deleted_sessions/</code> first (recoverable by hand) — not a permanent wipe.${warn}`,
+    deleteDesktopWarn: '<br><br>⚠️ <b>Codex Desktop is running</b>: if this session is already synced to the cloud, deleting it may get restored by sync. Quit Desktop first to delete permanently.',
+    actionLabels: { archive: "Archive", unarchive: "Unarchive", delete: "Delete" },
+    actionDone: (label, title) => `${label}d: ${title}`,
+    actionFailed: (label, msg) => `${label} failed: ${msg}`,
+    unknownError: "Unknown error",
+    errCodes: {
+      bad_request: "Failed to parse request body", unknown_action: "Unknown action", invalid_id: "Invalid session id",
+      codex_bin_missing: "codex command not found", action_no_effect: "Action had no effect", timeout: "Command timed out",
+    },
+  },
+};
+const t = T[LANG];
+
+function applyStaticI18n() {
+  document.title = t.appTitle;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.dataset.i18nPlaceholder;
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    const key = el.dataset.i18nHtml;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+}
+applyStaticI18n();
+
 let ALL = [];
 let filter = "all";
 let query = "";
@@ -206,29 +288,34 @@ function shortCwd(p) {
   if (!p) return "—";
   return p.replace(/^\/Users\/[^/]+/, "~");
 }
+function errText(data) {
+  const code = data && data.error_code;
+  if (code && t.errCodes[code]) return t.errCodes[code];
+  return (data && data.error) || t.unknownError;
+}
 
 function toast(msg, isErr) {
-  const t = $("#toast");
-  t.textContent = msg;
-  t.className = "show" + (isErr ? " err" : "");
+  const el = $("#toast");
+  el.textContent = msg;
+  el.className = "show" + (isErr ? " err" : "");
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => (t.className = ""), 2600);
+  toast._t = setTimeout(() => (el.className = ""), 2600);
 }
 
 async function load() {
-  $("#list").innerHTML = '<div class="loading">加载中…</div>';
+  $("#list").innerHTML = `<div class="loading">${t.loading}</div>`;
   try {
     const r = await fetch("/api/sessions");
     const data = await r.json();
-    if (!data.ok) throw new Error(data.error || "加载失败");
+    if (!data.ok) throw new Error(errText(data));
     ALL = data.sessions || [];
     DESKTOP = !!data.desktop_running;
     $("#home").textContent = data.codex_home || "";
     $("#banner").classList.toggle("show", DESKTOP);
-    if (!data.codex_bin) toast("未找到 codex 命令，归档/删除将不可用", true);
+    if (!data.codex_bin) toast(t.codexBinMissing, true);
     render();
   } catch (e) {
-    $("#list").innerHTML = `<div class="empty">加载失败：${esc(e.message)}</div>`;
+    $("#list").innerHTML = `<div class="empty">${t.loadFailed(esc(e.message))}</div>`;
   }
 }
 
@@ -243,10 +330,10 @@ function render() {
 
   const nLocal = ALL.filter((s) => !s.archived).length;
   const nArch = ALL.filter((s) => s.archived).length;
-  $("#stat").textContent = `共 ${ALL.length} 条　·　本地 ${nLocal}　·　归档 ${nArch}　·　当前显示 ${items.length}`;
+  $("#stat").textContent = t.stat(ALL.length, nLocal, nArch, items.length);
 
   if (!items.length) {
-    $("#list").innerHTML = '<div class="empty">没有匹配的对话。</div>';
+    $("#list").innerHTML = `<div class="empty">${t.noMatch}</div>`;
     return;
   }
 
@@ -258,13 +345,13 @@ function render() {
 
 function cardHTML(s) {
   const badge = s.archived
-    ? '<span class="badge arch">已归档</span>'
-    : '<span class="badge local">本地</span>';
+    ? `<span class="badge arch">${t.badgeArchived}</span>`
+    : `<span class="badge local">${t.badgeLocal}</span>`;
   const src = s.source ? `<span class="badge src">${esc(s.source)}</span>` : "";
-  const turns = `💬 ${s.user_turns}/${s.assistant_turns} 轮`;
+  const turns = t.turns(s.user_turns, s.assistant_turns);
   const actBtn = s.archived
-    ? `<button class="unarch" data-act="unarchive" data-id="${s.id}">↩︎ 取消归档</button>`
-    : `<button class="archive" data-act="archive" data-id="${s.id}">📦 归档</button>`;
+    ? `<button class="unarch" data-act="unarchive" data-id="${s.id}">${t.btnUnarchive}</button>`
+    : `<button class="archive" data-act="archive" data-id="${s.id}">${t.btnArchive}</button>`;
   return `
   <div class="card">
     <div class="main">
@@ -282,7 +369,7 @@ function cardHTML(s) {
     </div>
     <div class="actions">
       ${actBtn}
-      <button class="danger" data-act="delete" data-id="${s.id}">🗑 删除</button>
+      <button class="danger" data-act="delete" data-id="${s.id}">${t.btnDelete}</button>
     </div>
   </div>`;
 }
@@ -308,17 +395,12 @@ async function onAction(action, id) {
   const title = s ? s.title : id;
 
   if (action === "delete") {
-    const desktopWarn = DESKTOP
-      ? `<br><br>⚠️ <b>Codex Desktop 正在运行</b>：若该会话已同步云端，删除后可能被同步还原。要永久删除请先退出 Desktop。`
-      : "";
-    const ok = await confirmModal(
-      "删除这条对话？",
-      `将删除 <span class="mttl">「${esc(title)}」</span> 并从列表移除。<br><br>删除前会自动备份到 <code>~/.codex/deleted_sessions/</code>（可手动找回），并不是彻底抹除。${desktopWarn}`
-    );
+    const desktopWarn = DESKTOP ? t.deleteDesktopWarn : "";
+    const ok = await confirmModal(t.deleteTitle, t.deleteBody(esc(title), desktopWarn));
     if (!ok) return;
   }
 
-  const labels = { archive: "归档", unarchive: "取消归档", delete: "删除" };
+  const label = t.actionLabels[action];
   try {
     const r = await fetch("/api/action", {
       method: "POST",
@@ -327,13 +409,13 @@ async function onAction(action, id) {
     });
     const data = await r.json();
     if (data.ok) {
-      toast(`已${labels[action]}：${title}`);
+      toast(t.actionDone(label, title));
       await load();
     } else {
-      toast(`${labels[action]}失败：${esc(data.error || data.stderr || "未知错误")}`, true);
+      toast(t.actionFailed(label, esc(errText(data))), true);
     }
   } catch (e) {
-    toast(`${labels[action]}失败：${e.message}`, true);
+    toast(t.actionFailed(label, e.message), true);
   }
 }
 

@@ -424,7 +424,7 @@ def rmdir_if_empty(d):
 def perform_action(action, sid):
     src, archived, project = find_file(sid)
     if not src:
-        return {"ok": False, "action": action, "id": sid, "error": "找不到该会话文件"}
+        return {"ok": False, "action": action, "id": sid, "error": "找不到该会话文件", "error_code": "file_not_found"}
 
     try:
         if action == "delete":
@@ -454,7 +454,7 @@ def perform_action(action, sid):
             rmdir_if_empty(src.parent)
             return {"ok": True, "action": action, "id": sid}
 
-        return {"ok": False, "action": action, "id": sid, "error": "未知操作"}
+        return {"ok": False, "action": action, "id": sid, "error": "未知操作", "error_code": "unknown_action"}
     except OSError as e:
         return {"ok": False, "action": action, "id": sid, "error": str(e)}
 
@@ -510,12 +510,12 @@ class Handler(BaseHTTPRequestHandler):
         try:
             body = json.loads(raw.decode("utf-8")) if raw else {}
         except (json.JSONDecodeError, UnicodeDecodeError):
-            self._json(400, {"ok": False, "error": "请求体解析失败"})
+            self._json(400, {"ok": False, "error": "请求体解析失败", "error_code": "bad_request"})
             return
 
         action = body.get("action")
         if action not in ("archive", "unarchive", "delete"):
-            self._json(400, {"ok": False, "error": "未知操作"})
+            self._json(400, {"ok": False, "error": "未知操作", "error_code": "unknown_action"})
             return
 
         # 兼容两种入参：单条 id，或批量 ids=[...]
@@ -524,7 +524,7 @@ class Handler(BaseHTTPRequestHandler):
             ids = [body.get("id", "") or ""]
         valid = [i for i in ids if isinstance(i, str) and UUID_RE.match(i)]
         if not valid:
-            self._json(400, {"ok": False, "error": "没有合法的会话 id"})
+            self._json(400, {"ok": False, "error": "没有合法的会话 id", "error_code": "invalid_id"})
             return
 
         try:

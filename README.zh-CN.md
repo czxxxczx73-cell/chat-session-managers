@@ -18,7 +18,9 @@
 
 | Codex | Claude Code | Grok |
 |---|---|---|
-| ![Codex 截图](./docs/screenshots/codex.png) | ![Claude Code 截图](./docs/screenshots/claude-code.png) | ![Grok 截图](./docs/screenshots/grok.png) |
+| ![Codex 截图](./docs/screenshots/zh/codex.png) | ![Claude Code 截图](./docs/screenshots/zh/claude-code.png) | ![Grok 截图](./docs/screenshots/zh/grok.png) |
+
+> **界面本身也是中英双语的**——会自动跟随你系统/浏览器的语言,不用手动选(上面是中文截图；[英文 README](./README.md) 里放的是英文界面截图)。如果自动识别的语言不是你想要的,在地址栏 URL 后面加 `?lang=zh` 或 `?lang=en` 可以强制指定。
 
 ## 快速开始
 

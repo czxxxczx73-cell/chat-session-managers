@@ -248,28 +248,28 @@
   <div class="titlebar">
     <div class="brand">
       <span class="brandmark">✦</span>
-      <h1>Grok<span class="tvariant">对话管理器</span></h1>
+      <h1>Grok<span class="tvariant" data-i18n="appTitleSuffix">对话管理器</span></h1>
     </div>
     <span class="home" id="home"></span>
     <span class="spacer"></span>
-    <button class="ghost" id="refresh"><span class="spin">↻</span> 刷新</button>
+    <button class="ghost" id="refresh"><span class="spin">↻</span> <span data-i18n="refresh">刷新</span></button>
   </div>
   <div class="toolbar">
-    <input type="search" id="q" placeholder="搜索标题 / 目录(cwd) / 预览内容 / 模型 …" autocomplete="off">
-    <select class="proj" id="proj"><option value="">全部工程</option></select>
+    <input type="search" id="q" data-i18n-placeholder="searchPlaceholder" placeholder="搜索标题 / 目录(cwd) / 预览内容 / 模型 …" autocomplete="off">
+    <select class="proj" id="proj"><option value="" data-i18n="allProjects">全部工程</option></select>
     <div class="filters" id="filters">
-      <button data-f="all" class="active">全部</button>
-      <button data-f="local">本地</button>
-      <button data-f="archived">归档</button>
+      <button data-f="all" class="active" data-i18n="filterAll">全部</button>
+      <button data-f="local" data-i18n="filterLocal">本地</button>
+      <button data-f="archived" data-i18n="filterArchived">归档</button>
     </div>
-    <div class="filters" id="srcfilters" title="按状态筛选：活跃中（Grok 当前打开）或磁盘上的本地会话">
-      <button data-sf="all" class="active">全部状态</button>
-      <button data-sf="active">活跃中</button>
-      <button data-sf="local">空闲</button>
+    <div class="filters" id="srcfilters" data-i18n-title="srcFilterTitle" title="按状态筛选：活跃中（Grok 当前打开）或磁盘上的本地会话">
+      <button data-sf="all" class="active" data-i18n="srcAll">全部状态</button>
+      <button data-sf="active" data-i18n="srcActive">活跃中</button>
+      <button data-sf="local" data-i18n="srcIdle">空闲</button>
     </div>
-    <label class="selall"><input type="checkbox" id="selall"> 全选当前</label>
+    <label class="selall"><input type="checkbox" id="selall"> <span data-i18n="selectAllVisible">全选当前</span></label>
   </div>
-  <div id="banner">
+  <div id="banner" data-i18n-html="bannerRunning">
     ⚠️ <b>检测到 Grok 正在运行。</b>
     若你正在某个会话里对话，请避免对<b>当前活跃的那条会话</b>做归档/删除，以免文件被进程改写时发生冲突。其余会话不受影响。
   </div>
@@ -277,31 +277,147 @@
 
 <main>
   <div class="stat" id="stat"></div>
-  <div id="list"><div class="loading">加载中…</div></div>
+  <div id="list"><div class="loading" data-i18n="loading">加载中…</div></div>
 </main>
 
 <div id="batchbar">
-  <span id="batch-count">已选 0 项</span>
-  <button class="bb archive" data-bact="archive">📦 归档</button>
-  <button class="bb unarch" data-bact="unarchive">↩︎ 取消归档</button>
-  <button class="bb danger" data-bact="delete">🗑 删除</button>
-  <button class="bb ghost" id="batch-clear">清除</button>
+  <span id="batch-count"></span>
+  <button class="bb archive" data-bact="archive" data-i18n="btnArchive">📦 归档</button>
+  <button class="bb unarch" data-bact="unarchive" data-i18n="btnUnarchive">↩︎ 取消归档</button>
+  <button class="bb danger" data-bact="delete" data-i18n="btnDelete">🗑 删除</button>
+  <button class="bb ghost" id="batch-clear" data-i18n="clearSelection">清除</button>
 </div>
 
 <div id="toast"></div>
 
 <div id="overlay">
   <div class="modal">
-    <h3 id="m-title">确认</h3>
+    <h3 id="m-title" data-i18n="confirmTitle">确认</h3>
     <p id="m-body"></p>
     <div class="btns">
-      <button id="m-cancel">取消</button>
-      <button id="m-ok" class="confirm">确定</button>
+      <button id="m-cancel" data-i18n="cancel">取消</button>
+      <button id="m-ok" class="confirm" data-i18n="ok">确定</button>
     </div>
   </div>
 </div>
 
 <script>
+const LANG = (() => {
+  const qs = new URLSearchParams(location.search).get("lang");
+  if (qs === "zh" || qs === "en") return qs;
+  return ((navigator.language || "en").toLowerCase().startsWith("zh")) ? "zh" : "en";
+})();
+document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
+
+const T = {
+  zh: {
+    appTitle: "Grok 对话管理器",
+    appTitleSuffix: "对话管理器",
+    refresh: "刷新",
+    searchPlaceholder: "搜索标题 / 目录(cwd) / 预览内容 / 模型 …",
+    allProjects: "全部工程",
+    filterAll: "全部", filterLocal: "本地", filterArchived: "归档",
+    srcFilterTitle: "按状态筛选：活跃中（Grok 当前打开）或磁盘上的本地会话",
+    srcAll: "全部状态", srcActive: "活跃中", srcIdle: "空闲",
+    selectAllVisible: "全选当前",
+    bannerRunning: '⚠️ <b>检测到 Grok 正在运行。</b> 若你正在某个会话里对话，请避免对<b>当前活跃的那条会话</b>做归档/删除，以免文件被进程改写时发生冲突。其余会话不受影响。',
+    loading: "加载中…",
+    clearSelection: "清除",
+    confirmTitle: "确认", cancel: "取消", ok: "确定",
+    loadFailed: (msg) => `加载失败：${msg}`,
+    stat: (total, local, arch, active, idle, shown) =>
+      `共 ${total} 条　·　本地 ${local}　·　归档 ${arch}　·　状态：活跃 ${active} / 空闲 ${idle}　·　当前显示 ${shown}`,
+    noMatch: "没有匹配的对话。",
+    badgeArchived: "已归档", badgeLocal: "本地",
+    srcBadgeActive: { label: "活跃中", title: "该会话出现在 active_sessions.json，Grok 可能正在使用" },
+    srcBadgeIdle: { label: "空闲", title: "磁盘上的会话，当前不在活跃列表" },
+    aiTitleBadge: "AI 标题",
+    turns: (u, a) => `💬 ${u}/${a} 轮`,
+    btnUnarchive: "↩︎ 取消归档", btnArchive: "📦 归档", btnDelete: "🗑 删除",
+    deleteTitle: "删除这条对话？",
+    deleteBody: (title, warn) => `将删除 <span class="mttl">「${title}」</span> 并从列表移除。<br><br>删除前会自动备份到 <code>~/.grok/deleted_sessions/</code>（可手动找回），并不是彻底抹除。${warn}`,
+    deleteRunWarn: '<br><br>⚠️ <b>Grok 正在运行</b>：如果这正是你当前打开的会话，请先退出再删除，避免冲突。',
+    actionLabels: { archive: "归档", unarchive: "取消归档", delete: "删除" },
+    actionDone: (label, title) => `已${label}：${title}`,
+    actionFailed: (label, msg) => `${label}失败：${msg}`,
+    unknownError: "未知错误",
+    selectedCount: (n) => `已选 ${n} 项`,
+    batchDeleteTitle: (n) => `删除选中的 ${n} 条对话？`,
+    batchDeleteBody: (n, warn) => `将删除选中的 <span class="mttl">${n} 条</span>会话并从列表移除。<br><br>删除前都会自动备份到 <code>~/.grok/deleted_sessions/</code>（可手动找回）。${warn}`,
+    batchRunWarn: '<br><br>⚠️ <b>Grok 正在运行</b>：若选中项里有当前打开的会话，请先退出再删除。',
+    batchDone: (label, n) => `已${label} ${n} 条`,
+    batchPartial: (label, ok, fail) => `${label}：成功 ${ok}，失败 ${fail}`,
+    errCodes: {
+      bad_request: "请求体解析失败", unknown_action: "未知操作", invalid_id: "没有合法的会话 id",
+      file_not_found: "找不到该会话目录",
+    },
+  },
+  en: {
+    appTitle: "Grok Session Manager",
+    appTitleSuffix: "Session Manager",
+    refresh: "Refresh",
+    searchPlaceholder: "Search title / directory (cwd) / preview / model …",
+    allProjects: "All projects",
+    filterAll: "All", filterLocal: "Local", filterArchived: "Archived",
+    srcFilterTitle: "Filter by status: active (currently open in Grok) or a local session on disk",
+    srcAll: "All statuses", srcActive: "Active", srcIdle: "Idle",
+    selectAllVisible: "Select all visible",
+    bannerRunning: '⚠️ <b>Grok is running.</b> If you\'re currently chatting in a session, avoid archiving/deleting <b>the one that\'s active</b> — the file could get overwritten mid-write. Other sessions are unaffected.',
+    loading: "Loading…",
+    clearSelection: "Clear",
+    confirmTitle: "Confirm", cancel: "Cancel", ok: "OK",
+    loadFailed: (msg) => `Failed to load: ${msg}`,
+    stat: (total, local, arch, active, idle, shown) =>
+      `${total} total　·　${local} local　·　${arch} archived　·　status: ${active} active / ${idle} idle　·　${shown} shown`,
+    noMatch: "No matching conversations.",
+    badgeArchived: "Archived", badgeLocal: "Local",
+    srcBadgeActive: { label: "Active", title: "This session appears in active_sessions.json — Grok may be using it right now" },
+    srcBadgeIdle: { label: "Idle", title: "A session on disk, not currently in the active list" },
+    aiTitleBadge: "AI title",
+    turns: (u, a) => `💬 ${u}/${a} turns`,
+    btnUnarchive: "↩︎ Unarchive", btnArchive: "📦 Archive", btnDelete: "🗑 Delete",
+    deleteTitle: "Delete this conversation?",
+    deleteBody: (title, warn) => `This will delete <span class="mttl">"${title}"</span> and remove it from the list.<br><br>It's backed up to <code>~/.grok/deleted_sessions/</code> first (recoverable by hand) — not a permanent wipe.${warn}`,
+    deleteRunWarn: '<br><br>⚠️ <b>Grok is running</b>: if this is the session you currently have open, quit it first to avoid a conflict.',
+    actionLabels: { archive: "Archive", unarchive: "Unarchive", delete: "Delete" },
+    actionDone: (label, title) => `${label}d: ${title}`,
+    actionFailed: (label, msg) => `${label} failed: ${msg}`,
+    unknownError: "Unknown error",
+    selectedCount: (n) => `${n} selected`,
+    batchDeleteTitle: (n) => `Delete the ${n} selected conversations?`,
+    batchDeleteBody: (n, warn) => `This will delete the <span class="mttl">${n}</span> selected conversations and remove them from the list.<br><br>Each is backed up to <code>~/.grok/deleted_sessions/</code> first (recoverable by hand).${warn}`,
+    batchRunWarn: '<br><br>⚠️ <b>Grok is running</b>: if the current session is among those selected, quit it first before deleting.',
+    batchDone: (label, n) => `${label}d ${n}`,
+    batchPartial: (label, ok, fail) => `${label}: ${ok} succeeded, ${fail} failed`,
+    errCodes: {
+      bad_request: "Failed to parse request body", unknown_action: "Unknown action", invalid_id: "No valid session id",
+      file_not_found: "Session directory not found",
+    },
+  },
+};
+const t = T[LANG];
+
+function applyStaticI18n() {
+  document.title = t.appTitle;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.dataset.i18nPlaceholder;
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    const key = el.dataset.i18nTitle;
+    if (t[key] !== undefined) el.title = t[key];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    const key = el.dataset.i18nHtml;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  $("#batch-count").textContent = t.selectedCount(0);
+}
+
 let ALL = [];
 let filter = "all";
 let srcFilter = "all";
@@ -311,6 +427,7 @@ let RUNNING = false;
 let selected = new Set();
 
 const $ = (s) => document.querySelector(s);
+applyStaticI18n();
 
 function fmtDate(s, mtime) {
   let d = s ? new Date(s) : (mtime ? new Date(mtime * 1000) : null);
@@ -331,21 +448,26 @@ function shortCwd(p) {
   if (!p) return "—";
   return p.replace(/^\/Users\/[^/]+/, "~");
 }
+function errText(data) {
+  const code = data && data.error_code;
+  if (code && t.errCodes[code]) return t.errCodes[code];
+  return (data && data.error) || t.unknownError;
+}
 
 function toast(msg, isErr) {
-  const t = $("#toast");
-  t.textContent = msg;
-  t.className = "show" + (isErr ? " err" : "");
+  const el = $("#toast");
+  el.textContent = msg;
+  el.className = "show" + (isErr ? " err" : "");
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => (t.className = ""), 2600);
+  toast._t = setTimeout(() => (el.className = ""), 2600);
 }
 
 async function load() {
-  $("#list").innerHTML = '<div class="loading">加载中…</div>';
+  $("#list").innerHTML = `<div class="loading">${t.loading}</div>`;
   try {
     const r = await fetch("/api/sessions");
     const data = await r.json();
-    if (!data.ok) throw new Error(data.error || "加载失败");
+    if (!data.ok) throw new Error(errText(data));
     ALL = data.sessions || [];
     RUNNING = !!(data.grok_running || data.claude_running);
     $("#home").textContent = data.grok_home || data.claude_home || "";
@@ -353,7 +475,7 @@ async function load() {
     fillProjects();
     render();
   } catch (e) {
-    $("#list").innerHTML = `<div class="empty">加载失败：${esc(e.message)}</div>`;
+    $("#list").innerHTML = `<div class="empty">${t.loadFailed(esc(e.message))}</div>`;
   }
 }
 
@@ -361,7 +483,7 @@ function fillProjects() {
   const sel = $("#proj");
   const cur = projFilter;
   const cwds = [...new Set(ALL.map((s) => s.cwd).filter(Boolean))].sort();
-  sel.innerHTML = '<option value="">全部工程</option>' +
+  sel.innerHTML = `<option value="">${t.allProjects}</option>` +
     cwds.map((c) => `<option value="${esc(c)}">${esc(shortCwd(c))}</option>`).join("");
   sel.value = cwds.includes(cur) ? cur : "";
   projFilter = sel.value;
@@ -386,12 +508,10 @@ function render() {
   const nArch = ALL.filter((s) => s.archived).length;
   const nActive = ALL.filter((s) => s.source === "active").length;
   const nIdle = ALL.filter((s) => s.source === "local").length;
-  $("#stat").textContent = `共 ${ALL.length} 条　·　本地 ${nLocal}　·　归档 ${nArch}`
-    + `　·　状态：活跃 ${nActive} / 空闲 ${nIdle}`
-    + `　·　当前显示 ${items.length}`;
+  $("#stat").textContent = t.stat(ALL.length, nLocal, nArch, nActive, nIdle, items.length);
 
   if (!items.length) {
-    $("#list").innerHTML = '<div class="empty">没有匹配的对话。</div>';
+    $("#list").innerHTML = `<div class="empty">${t.noMatch}</div>`;
   } else {
     $("#list").innerHTML = items.map(cardHTML).join("");
     document.querySelectorAll("[data-act]").forEach((btn) => {
@@ -406,25 +526,21 @@ function render() {
 
 function cardHTML(s) {
   const badge = s.archived
-    ? '<span class="badge arch">已归档</span>'
-    : '<span class="badge local">本地</span>';
+    ? `<span class="badge arch">${t.badgeArchived}</span>`
+    : `<span class="badge local">${t.badgeLocal}</span>`;
   const srcBadge = {
-    active:  '<span class="badge src-active" title="该会话出现在 active_sessions.json，Grok 可能正在使用">活跃中</span>',
-    local:   '<span class="badge src-local" title="磁盘上的会话，当前不在活跃列表">空闲</span>',
+    active:  `<span class="badge src-active" title="${esc(t.srcBadgeActive.title)}">${t.srcBadgeActive.label}</span>`,
+    local:   `<span class="badge src-local" title="${esc(t.srcBadgeIdle.title)}">${t.srcBadgeIdle.label}</span>`,
   }[s.source] || "";
-  const titleKind = s.ai_title
-    ? '<span class="badge ai">AI 标题</span>'
-    : "";
-  const modelBadge = s.model
-    ? `<span class="badge model">${esc(s.model)}</span>`
-    : "";
-  const turns = `💬 ${s.user_turns}/${s.assistant_turns} 轮`;
+  const titleKind = s.ai_title ? `<span class="badge ai">${t.aiTitleBadge}</span>` : "";
+  const modelBadge = s.model ? `<span class="badge model">${esc(s.model)}</span>` : "";
+  const turns = t.turns(s.user_turns, s.assistant_turns);
   const agent = s.agent_name ? `<span>🤖 ${esc(s.agent_name)}</span>` : "";
   const actBtn = s.archived
-    ? `<button class="unarch" data-act="unarchive" data-id="${s.id}">↩︎ 取消归档</button>`
-    : `<button class="archive" data-act="archive" data-id="${s.id}">📦 归档</button>`;
+    ? `<button class="unarch" data-act="unarchive" data-id="${s.id}">${t.btnUnarchive}</button>`
+    : `<button class="archive" data-act="archive" data-id="${s.id}">${t.btnArchive}</button>`;
   const actions = `${actBtn}
-      <button class="danger" data-act="delete" data-id="${s.id}">🗑 删除</button>`;
+      <button class="danger" data-act="delete" data-id="${s.id}">${t.btnDelete}</button>`;
   const picked = selected.has(s.id);
   return `
   <div class="card${picked ? ' picked' : ''}">
@@ -470,17 +586,12 @@ async function onAction(action, id) {
   const title = s ? s.title : id;
 
   if (action === "delete") {
-    const runWarn = RUNNING
-      ? `<br><br>⚠️ <b>Grok 正在运行</b>：如果这正是你当前打开的会话，请先退出再删除，避免冲突。`
-      : "";
-    const ok = await confirmModal(
-      "删除这条对话？",
-      `将删除 <span class="mttl">「${esc(title)}」</span> 并从列表移除。<br><br>删除前会自动备份到 <code>~/.grok/deleted_sessions/</code>（可手动找回），并不是彻底抹除。${runWarn}`
-    );
+    const runWarn = RUNNING ? t.deleteRunWarn : "";
+    const ok = await confirmModal(t.deleteTitle, t.deleteBody(esc(title), runWarn));
     if (!ok) return;
   }
 
-  const labels = { archive: "归档", unarchive: "取消归档", delete: "删除" };
+  const label = t.actionLabels[action];
   try {
     const r = await fetch("/api/action", {
       method: "POST",
@@ -489,13 +600,13 @@ async function onAction(action, id) {
     });
     const data = await r.json();
     if (data.ok) {
-      toast(`已${labels[action]}：${title}`);
+      toast(t.actionDone(label, title));
       await load();
     } else {
-      toast(`${labels[action]}失败：${esc(data.error || "未知错误")}`, true);
+      toast(t.actionFailed(label, esc(errText(data))), true);
     }
   } catch (e) {
-    toast(`${labels[action]}失败：${e.message}`, true);
+    toast(t.actionFailed(label, e.message), true);
   }
 }
 
@@ -519,7 +630,7 @@ function syncSelectionUI() {
 
   const n = selected.size;
   $("#batchbar").classList.toggle("show", n > 0);
-  $("#batch-count").textContent = `已选 ${n} 项`;
+  $("#batch-count").textContent = t.selectedCount(n);
 
   const vis = filtered();
   const visSel = vis.filter((s) => selected.has(s.id)).length;
@@ -531,15 +642,13 @@ function syncSelectionUI() {
 async function onBatch(action) {
   const ids = [...selected];
   if (!ids.length) return;
-  const labels = { archive: "归档", unarchive: "取消归档", delete: "删除" };
+  const label = t.actionLabels[action];
 
   if (action === "delete") {
-    const runWarn = RUNNING
-      ? `<br><br>⚠️ <b>Grok 正在运行</b>：若选中项里有当前打开的会话，请先退出再删除。`
-      : "";
+    const runWarn = RUNNING ? t.batchRunWarn : "";
     const ok = await confirmModal(
-      `删除选中的 ${ids.length} 条对话？`,
-      `将删除选中的 <span class="mttl">${ids.length} 条</span>会话并从列表移除。<br><br>删除前都会自动备份到 <code>~/.grok/deleted_sessions/</code>（可手动找回）。${runWarn}`
+      t.batchDeleteTitle(ids.length),
+      t.batchDeleteBody(ids.length, runWarn)
     );
     if (!ok) return;
   }
@@ -553,10 +662,10 @@ async function onBatch(action) {
     const data = await r.json();
     const okN = data.succeeded ?? (data.ok ? ids.length : 0);
     const failN = data.failed ?? (data.ok ? 0 : ids.length);
-    if (failN === 0) toast(`已${labels[action]} ${okN} 条`);
-    else toast(`${labels[action]}：成功 ${okN}，失败 ${failN}`, true);
+    if (failN === 0) toast(t.batchDone(label, okN));
+    else toast(t.batchPartial(label, okN, failN), true);
   } catch (e) {
-    toast(`${labels[action]}失败：${e.message}`, true);
+    toast(t.actionFailed(label, e.message), true);
   }
   selected.clear();
   await load();
