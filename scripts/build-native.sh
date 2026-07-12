@@ -6,6 +6,7 @@ BUILD="$ROOT/.build/native"
 DIST="$ROOT/dist/native"
 SDK="$(xcrun --sdk macosx --show-sdk-path)"
 MIN_MACOS="${MACOSX_DEPLOYMENT_TARGET:-13.0}"
+VERSION="${VERSION:-2.0.1}"
 
 name_for() {
   case "$1" in
@@ -48,8 +49,8 @@ for key in codex claude-code grok; do
   /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $(bundle_for "$key")" "$app/Contents/Info.plist"
   /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName $name" "$app/Contents/Info.plist"
   /usr/libexec/PlistBuddy -c "Set :CFBundleName $name" "$app/Contents/Info.plist"
-  /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString 2.0.0" "$app/Contents/Info.plist"
-  /usr/libexec/PlistBuddy -c "Set :CFBundleVersion 2" "$app/Contents/Info.plist"
+  /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "$app/Contents/Info.plist"
+  /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${VERSION//./}" "$app/Contents/Info.plist"
   /usr/libexec/PlistBuddy -c "Set :LSMinimumSystemVersion 13.0" "$app/Contents/Info.plist"
   codesign --force --deep --sign - --timestamp=none "$app"
   codesign --verify --deep --strict "$app"

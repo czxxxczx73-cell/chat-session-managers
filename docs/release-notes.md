@@ -11,6 +11,8 @@ This file is the `--notes-file` used by `.github/workflows/release.yml` for whic
 - Claude refresh no longer auto-deletes local transcripts
 - Parent-process cleanup prevents orphaned local services
 - Fictional fixture tests verify read-only refresh for all three providers
+- Codex one-shot `exec` tasks and injected AGENTS context are excluded from the conversation list
+- GitHub Social Preview and sharper bilingual project positioning
 
 ## Download
 

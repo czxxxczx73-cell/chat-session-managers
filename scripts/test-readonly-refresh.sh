@@ -34,7 +34,7 @@ check_provider() {
     if curl -fsS "http://127.0.0.1:$port/api/sessions" >"$WORK/$key.json" 2>/dev/null; then break; fi
     sleep 0.05
   done
-  python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d["ok"] and len(d["sessions"]) == 1' "$WORK/$key.json"
+  python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d["ok"] and len(d["sessions"]) == 1; s=d["sessions"][0]; key=sys.argv[2]; assert key != "codex" or (s["title"] == "Fixture Codex session" and s["preview"] == "Test the Codex fixture safely." and s["user_turns"] == 1)' "$WORK/$key.json" "$key"
   after="$(snapshot "$home")"
   [[ "$before" == "$after" ]] || { echo "$key refresh modified fixture data" >&2; exit 1; }
   kill "$pid" 2>/dev/null || true

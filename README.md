@@ -1,15 +1,20 @@
 [English](./README.md) | [中文](./README.zh-CN.md)
 
-# Chat Session Managers for macOS
+# Chat Session Managers — Codex, Claude Code & Grok History for macOS
+
+![Chat Session Managers social preview](./docs/social-preview.png)
 
 [![CI](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml/badge.svg)](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/czxxxczx73-cell/chat-session-managers)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/czxxxczx73-cell/chat-session-managers/total)](https://github.com/czxxxczx73-cell/chat-session-managers/releases)
 [![macOS](https://img.shields.io/badge/macOS-13%2B-111111?logo=apple)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Universal](https://img.shields.io/badge/Universal-Apple%20Silicon%20%2B%20Intel-3a7bd5)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Local only](https://img.shields.io/badge/privacy-local%20only-2ea44f)](./PRIVACY.md)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 Three focused macOS apps for browsing and managing conversation history stored locally by **Codex**, **Claude Code**, and **Grok**. The release uses a compact native Universal 2 host while preserving the original card-based interface exactly.
+
+Unlike unified session databases, these are three independent lightweight Apps. Each reads the tool's existing on-disk format directly, so you can install only what you use and keep every conversation on your Mac.
 
 | Codex | Claude Code | Grok |
 |---|---|---|

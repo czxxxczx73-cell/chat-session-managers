@@ -91,6 +91,36 @@ def extract_text(content):
     return "\n".join(parts)
 
 
+def is_injected_user_text(text):
+    """Return True for Codex context blocks that are not typed chat messages."""
+    if not isinstance(text, str):
+        return True
+    stripped = text.lstrip("\ufeff \t\r\n")
+    if not stripped:
+        return True
+    if stripped.startswith("<"):
+        return True
+    lowered = stripped.casefold()
+    injected_prefixes = (
+        "# agents.md instructions",
+        "## agents.md instructions",
+        "# skills instructions",
+        "## skills instructions",
+        "# environment_context",
+        "## environment_context",
+        "# permissions instructions",
+        "## permissions instructions",
+    )
+    return lowered.startswith(injected_prefixes)
+
+
+def is_non_conversation(meta):
+    """Exclude one-shot automation runs from the interactive conversation list."""
+    source = str(meta.get("source") or "").casefold()
+    originator = str(meta.get("originator") or "").casefold()
+    return source == "exec" or originator == "codex_exec"
+
+
 def parse_rollout(path):
     """读取一个 rollout 文件，返回 (meta, preview, user_turns, assistant_turns)。
 
@@ -119,7 +149,7 @@ def parse_rollout(path):
                     role = payload.get("role")
                     text = extract_text(payload.get("content"))
                     if role == "user":
-                        if text and not text.lstrip().startswith("<"):
+                        if not is_injected_user_text(text):
                             user_turns += 1
                             if not preview:
                                 preview = text.strip()
@@ -143,6 +173,8 @@ def collect():
 
     def handle(path, archived):
         meta, preview, ut, at = parse_rollout(path)
+        if is_non_conversation(meta) or ut == 0:
+            return
         sid = meta.get("id") or id_from_name(path.name)
         if not sid or sid in seen:
             return
@@ -153,10 +185,13 @@ def collect():
             mtime, size = st.st_mtime, st.st_size
         except OSError:
             mtime, size = 0, 0
+        indexed_title = info.get("thread_name") or ""
+        if is_injected_user_text(indexed_title):
+            indexed_title = ""
         sessions.append(
             {
                 "id": sid,
-                "title": info.get("thread_name")
+                "title": indexed_title
                 or (preview[:40] if preview else "(未命名会话)"),
                 "updated_at": info.get("updated_at") or meta.get("timestamp") or "",
                 "created_at": meta.get("timestamp") or "",
