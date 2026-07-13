@@ -80,3 +80,12 @@ make check test package
 - `make package` creates the direct Universal 2 release, ready under `dist/`.
 
 Contributions are welcome; see [CONTRIBUTING.md](./CONTRIBUTING.md). Licensed under [MIT](./LICENSE).
+
+## Support
+
+If these apps help you manage Codex / Claude Code / Grok history, please **star this repository** — it is the fastest way for other macOS users to discover local-first tools.
+
+- Download: [latest release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+- Privacy: [PRIVACY.md](./PRIVACY.md)
+- Issues / ideas: [GitHub Issues](https://github.com/czxxxczx73-cell/chat-session-managers/issues)
+

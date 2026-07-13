@@ -80,3 +80,12 @@ make check test package
 - `make package`：生成直接下载的 Universal 2 发布包，产物在 `dist/` 下。
 
 欢迎贡献，参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。项目采用 [MIT](./LICENSE) 许可证。
+
+## 支持
+
+如果这些 App 帮你整理 Codex / Claude Code / Grok 本地历史，请给仓库点个 **Star**——这是让更多 macOS 用户发现本地优先工具的最快方式。
+
+- 下载：[最新 Release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+- 隐私：[PRIVACY.md](./PRIVACY.md)
+- 问题 / 想法：[GitHub Issues](https://github.com/czxxxczx73-cell/chat-session-managers/issues)
+
