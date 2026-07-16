@@ -1,6 +1,12 @@
-# Release notes
+# Chat Session Managers
 
-This file is the `--notes-file` used by `.github/workflows/release.yml` for whichever tag was just pushed — update it before tagging a new release so it describes what actually changed.
+Three focused, local-first macOS Apps for browsing and managing conversation history from **Codex**, **Claude Code**, and **Grok**. Install only the Apps you use; no account, cloud database, analytics, or telemetry is involved.
+
+## Watch the functional demo
+
+[**Watch the 20-second 1080p live UI demo →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
+
+The video shows real search, source and status filters, multi-select batch archive, restore, and the recoverable backup warning shown before delete. It uses isolated fictional data. A lightweight animated preview is embedded directly in the README, and the full experience is available on the [bilingual product page](https://czxxxczx73-cell.github.io/chat-session-managers/).
 
 ## Current highlights
 
@@ -16,6 +22,9 @@ This file is the `--notes-file` used by `.github/workflows/release.yml` for whic
 
 ## Download
 
-- `Chat-Session-Managers-v<version>-universal.zip` — the only distributed package
+- `Chat-Session-Managers-v<version>-universal.zip` — the Universal 2 App package
+- `chat-session-managers-demo-v2.mp4` — the 20-second 1080p live UI walkthrough
 
 Requires Python 3.9+ installed locally (used only for the standard-library session service, not for the window itself). The Apps are ad-hoc signed, so macOS may require right-clicking and choosing **Open** once.
+
+Questions, ideas, and showcases are welcome in [GitHub Discussions](https://github.com/czxxxczx73-cell/chat-session-managers/discussions). Bug reports belong in [GitHub Issues](https://github.com/czxxxczx73-cell/chat-session-managers/issues).

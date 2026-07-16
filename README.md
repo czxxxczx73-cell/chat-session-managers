@@ -2,11 +2,24 @@
 
 # Chat Session Managers — Codex, Claude Code & Grok History for macOS
 
-![Chat Session Managers social preview](./docs/social-preview.png)
+[![Chat Session Managers — 20-second live UI demo](./docs/chat-session-managers-demo-v2.gif)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
+
+<p align="center"><sub>Real UI · fictional local data · click for the full 1080p video</sub></p>
+
+<p align="center">
+  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest">Download the latest release</a></strong>
+  ·
+  <strong><a href="https://czxxxczx73-cell.github.io/chat-session-managers/">Open the product page</a></strong>
+  ·
+  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4">Watch the 20-second live demo</a></strong>
+  ·
+  <a href="https://github.com/czxxxczx73-cell/chat-session-managers/discussions">Join the discussion</a>
+</p>
 
 [![CI](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml/badge.svg)](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/czxxxczx73-cell/chat-session-managers)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/czxxxczx73-cell/chat-session-managers/total)](https://github.com/czxxxczx73-cell/chat-session-managers/releases)
+[![Stars](https://img.shields.io/github/stars/czxxxczx73-cell/chat-session-managers?logo=github)](https://github.com/czxxxczx73-cell/chat-session-managers/stargazers)
 [![macOS](https://img.shields.io/badge/macOS-13%2B-111111?logo=apple)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Universal](https://img.shields.io/badge/Universal-Apple%20Silicon%20%2B%20Intel-3a7bd5)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Local only](https://img.shields.io/badge/privacy-local%20only-2ea44f)](./PRIVACY.md)
@@ -22,6 +35,12 @@ Unlike unified session databases, these are three independent lightweight Apps. 
 | ![Codex Session Manager](./docs/screenshots/en/codex.png) | ![Claude Code Session Manager](./docs/screenshots/en/claude-code.png) | ![Grok Session Manager](./docs/screenshots/en/grok.png) |
 
 All screenshots contain fictional demo data. The interface automatically follows the macOS/browser language, with complete English and Simplified Chinese UI.
+
+## See it in action
+
+[**Watch the 20-second 1080p live UI demo →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4) · [Open the bilingual product page](https://czxxxczx73-cell.github.io/chat-session-managers/)
+
+The demo uses isolated fictional data to show the real workflows: search across local sessions, filter Claude records by source, multi-select and batch archive, restore archived records, switch between active and idle Grok sessions, and review the recoverable backup warning before delete.
 
 ## Download
 
@@ -92,6 +111,8 @@ Contributions are welcome; see [CONTRIBUTING.md](./CONTRIBUTING.md). Licensed un
 If these apps help you manage Codex / Claude Code / Grok history, please **star this repository** — it is the fastest way for other macOS users to discover local-first tools.
 
 - Download: [latest release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+- Product page: [live demo and feature overview](https://czxxxczx73-cell.github.io/chat-session-managers/)
+- Demo: [20-second 1080p live UI walkthrough](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
 - Privacy: [PRIVACY.md](./PRIVACY.md)
 - Issues / ideas: [GitHub Issues](https://github.com/czxxxczx73-cell/chat-session-managers/issues)
-
+- Questions / showcases: [GitHub Discussions](https://github.com/czxxxczx73-cell/chat-session-managers/discussions)

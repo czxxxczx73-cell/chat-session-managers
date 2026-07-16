@@ -1,0 +1,38 @@
+name: Feature request
+description: Propose a focused improvement that preserves the local-first privacy model.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: App or project area
+      options: [All apps, Codex Session Manager, Claude Code Session Manager, Grok Session Manager, Packaging and documentation]
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the workflow rather than only the desired implementation. Use fictional or sanitized examples.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Project guardrails
+      options:
+        - label: This proposal does not require uploading conversation data or adding analytics/telemetry.
+          required: true
+        - label: I removed conversation content, credentials, usernames, and personal paths.
+          required: true
