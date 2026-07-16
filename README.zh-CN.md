@@ -2,11 +2,20 @@
 
 # macOS 对话管理器 — Codex、Claude Code 与 Grok 本地历史
 
-![对话管理器社交预览](./docs/social-preview.png)
+[![对话管理器社交预览](./docs/social-preview.png)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4)
+
+<p align="center">
+  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest">下载最新版本</a></strong>
+  ·
+  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4">观看 24 秒功能演示</a></strong>
+  ·
+  <a href="https://github.com/czxxxczx73-cell/chat-session-managers/discussions">参与讨论</a>
+</p>
 
 [![CI](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml/badge.svg)](https://github.com/czxxxczx73-cell/chat-session-managers/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/czxxxczx73-cell/chat-session-managers)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/czxxxczx73-cell/chat-session-managers/total)](https://github.com/czxxxczx73-cell/chat-session-managers/releases)
+[![Stars](https://img.shields.io/github/stars/czxxxczx73-cell/chat-session-managers?logo=github)](https://github.com/czxxxczx73-cell/chat-session-managers/stargazers)
 [![macOS](https://img.shields.io/badge/macOS-13%2B-111111?logo=apple)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Universal](https://img.shields.io/badge/Universal-Apple%20Silicon%20%2B%20Intel-3a7bd5)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Local only](https://img.shields.io/badge/privacy-local%20only-2ea44f)](./PRIVACY.md)
@@ -22,6 +31,12 @@
 | ![Codex 对话管理器](./docs/screenshots/zh/codex.png) | ![Claude Code 对话管理器](./docs/screenshots/zh/claude-code.png) | ![Grok 对话管理器](./docs/screenshots/zh/grok.png) |
 
 所有截图均为虚构演示数据。界面会自动跟随 macOS / 浏览器语言，完整支持简体中文和英文。
+
+## 观看实际功能
+
+[**观看 24 秒功能演示 →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4) · [在 X 查看视频讨论串](https://x.com/czxxxxem/status/2077606819057332303)
+
+演示使用隔离的虚构数据，展示真实功能流程：搜索本地会话、按来源筛选 Claude 记录、多选并批量归档、切换 Grok 活跃/空闲状态，以及删除前查看可恢复备份和运行冲突提示。
 
 ## 直接下载
 
@@ -92,6 +107,7 @@ make check test package
 如果这些 App 帮你整理 Codex / Claude Code / Grok 本地历史，请给仓库点个 **Star**——这是让更多 macOS 用户发现本地优先工具的最快方式。
 
 - 下载：[最新 Release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
+- 演示：[24 秒功能演示](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4)
 - 隐私：[PRIVACY.md](./PRIVACY.md)
 - 问题 / 想法：[GitHub Issues](https://github.com/czxxxczx73-cell/chat-session-managers/issues)
-
+- 问答 / 展示：[GitHub Discussions](https://github.com/czxxxczx73-cell/chat-session-managers/discussions)
