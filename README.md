@@ -11,6 +11,7 @@
 [![Universal](https://img.shields.io/badge/Universal-Apple%20Silicon%20%2B%20Intel-3a7bd5)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Local only](https://img.shields.io/badge/privacy-local%20only-2ea44f)](./PRIVACY.md)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Awesome](https://awesome.re/badge.svg)](https://github.com/jaywcjlove/awesome-swift-macos-apps#ai)
 
 Three focused macOS apps for browsing and managing conversation history stored locally by **Codex**, **Claude Code**, and **Grok**. The release uses a compact native Universal 2 host while preserving the original card-based interface exactly.
 
@@ -80,6 +81,11 @@ make check test package
 - `make package` creates the direct Universal 2 release, ready under `dist/`.
 
 Contributions are welcome; see [CONTRIBUTING.md](./CONTRIBUTING.md). Licensed under [MIT](./LICENSE).
+
+
+## Recognition
+
+- Listed in [Awesome Swift macOS Apps](https://github.com/jaywcjlove/awesome-swift-macos-apps) (AI)
 
 ## Support
 

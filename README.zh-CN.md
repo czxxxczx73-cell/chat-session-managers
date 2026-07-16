@@ -11,6 +11,7 @@
 [![Universal](https://img.shields.io/badge/Universal-Apple%20Silicon%20%2B%20Intel-3a7bd5)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
 [![Local only](https://img.shields.io/badge/privacy-local%20only-2ea44f)](./PRIVACY.md)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Awesome](https://awesome.re/badge.svg)](https://github.com/jaywcjlove/awesome-swift-macos-apps#ai)
 
 三款专门管理本地对话历史的 macOS App，分别支持 **Codex、Claude Code、Grok**。发布版换成了轻量 Universal 2 原生宿主，但完整保留原来的卡片式界面和排版。
 
@@ -80,6 +81,11 @@ make check test package
 - `make package`：生成直接下载的 Universal 2 发布包，产物在 `dist/` 下。
 
 欢迎贡献，参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。项目采用 [MIT](./LICENSE) 许可证。
+
+
+## 收录
+
+- 已收录于 [Awesome Swift macOS Apps](https://github.com/jaywcjlove/awesome-swift-macos-apps)（AI 分类）
 
 ## 支持
 
