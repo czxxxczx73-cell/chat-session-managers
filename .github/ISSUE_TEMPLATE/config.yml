@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Questions and ideas
+    url: https://github.com/czxxxczx73-cell/chat-session-managers/discussions
+    about: Ask for help, share a workflow, or discuss an idea before filing an issue.
   - name: Security vulnerability
     url: https://github.com/czxxxczx73-cell/chat-session-managers/security/advisories/new
     about: Report vulnerabilities privately. Do not open a public issue.

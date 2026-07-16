@@ -2,12 +2,16 @@
 
 # macOS 对话管理器 — Codex、Claude Code 与 Grok 本地历史
 
-[![对话管理器社交预览](./docs/social-preview.png)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4)
+[![对话管理器 — 20 秒真实界面演示](./docs/chat-session-managers-demo-v2.gif)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
+
+<p align="center"><sub>真实界面 · 虚构本地数据 · 点击观看 1080p 完整视频</sub></p>
 
 <p align="center">
   <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest">下载最新版本</a></strong>
   ·
-  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4">观看 24 秒功能演示</a></strong>
+  <strong><a href="https://czxxxczx73-cell.github.io/chat-session-managers/">打开产品页</a></strong>
+  ·
+  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4">观看 20 秒真实演示</a></strong>
   ·
   <a href="https://github.com/czxxxczx73-cell/chat-session-managers/discussions">参与讨论</a>
 </p>
@@ -34,9 +38,9 @@
 
 ## 观看实际功能
 
-[**观看 24 秒功能演示 →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4) · [在 X 查看视频讨论串](https://x.com/czxxxxem/status/2077606819057332303)
+[**观看 20 秒 1080p 真实界面演示 →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4) · [打开中英文产品页](https://czxxxczx73-cell.github.io/chat-session-managers/)
 
-演示使用隔离的虚构数据，展示真实功能流程：搜索本地会话、按来源筛选 Claude 记录、多选并批量归档、切换 Grok 活跃/空闲状态，以及删除前查看可恢复备份和运行冲突提示。
+演示使用隔离的虚构数据，展示真实功能流程：搜索本地会话、按来源筛选 Claude 记录、多选并批量归档、恢复归档记录、切换 Grok 活跃/空闲状态，以及删除前查看可恢复备份和运行冲突提示。
 
 ## 直接下载
 
@@ -107,7 +111,8 @@ make check test package
 如果这些 App 帮你整理 Codex / Claude Code / Grok 本地历史，请给仓库点个 **Star**——这是让更多 macOS 用户发现本地优先工具的最快方式。
 
 - 下载：[最新 Release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
-- 演示：[24 秒功能演示](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4)
+- 产品页：[真实演示与功能概览](https://czxxxczx73-cell.github.io/chat-session-managers/)
+- 演示：[20 秒 1080p 真实界面演示](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
 - 隐私：[PRIVACY.md](./PRIVACY.md)
 - 问题 / 想法：[GitHub Issues](https://github.com/czxxxczx73-cell/chat-session-managers/issues)
 - 问答 / 展示：[GitHub Discussions](https://github.com/czxxxczx73-cell/chat-session-managers/discussions)

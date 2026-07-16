@@ -2,12 +2,16 @@
 
 # Chat Session Managers — Codex, Claude Code & Grok History for macOS
 
-[![Chat Session Managers social preview](./docs/social-preview.png)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4)
+[![Chat Session Managers — 20-second live UI demo](./docs/chat-session-managers-demo-v2.gif)](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
+
+<p align="center"><sub>Real UI · fictional local data · click for the full 1080p video</sub></p>
 
 <p align="center">
   <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest">Download the latest release</a></strong>
   ·
-  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4">Watch the 24-second functional demo</a></strong>
+  <strong><a href="https://czxxxczx73-cell.github.io/chat-session-managers/">Open the product page</a></strong>
+  ·
+  <strong><a href="https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4">Watch the 20-second live demo</a></strong>
   ·
   <a href="https://github.com/czxxxczx73-cell/chat-session-managers/discussions">Join the discussion</a>
 </p>
@@ -34,9 +38,9 @@ All screenshots contain fictional demo data. The interface automatically follows
 
 ## See it in action
 
-[**Watch the 24-second functional demo →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4) · [View the video thread on X](https://x.com/czxxxxem/status/2077606819057332303)
+[**Watch the 20-second 1080p live UI demo →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4) · [Open the bilingual product page](https://czxxxczx73-cell.github.io/chat-session-managers/)
 
-The demo uses isolated fictional data to show the real workflows: search across local sessions, filter Claude records by source, multi-select and batch archive, switch between active and idle Grok sessions, and review the recoverable backup warning before delete.
+The demo uses isolated fictional data to show the real workflows: search across local sessions, filter Claude records by source, multi-select and batch archive, restore archived records, switch between active and idle Grok sessions, and review the recoverable backup warning before delete.
 
 ## Download
 
@@ -107,7 +111,8 @@ Contributions are welcome; see [CONTRIBUTING.md](./CONTRIBUTING.md). Licensed un
 If these apps help you manage Codex / Claude Code / Grok history, please **star this repository** — it is the fastest way for other macOS users to discover local-first tools.
 
 - Download: [latest release](https://github.com/czxxxczx73-cell/chat-session-managers/releases/latest)
-- Demo: [24-second functional walkthrough](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4)
+- Product page: [live demo and feature overview](https://czxxxczx73-cell.github.io/chat-session-managers/)
+- Demo: [20-second 1080p live UI walkthrough](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
 - Privacy: [PRIVACY.md](./PRIVACY.md)
 - Issues / ideas: [GitHub Issues](https://github.com/czxxxczx73-cell/chat-session-managers/issues)
 - Questions / showcases: [GitHub Discussions](https://github.com/czxxxczx73-cell/chat-session-managers/discussions)

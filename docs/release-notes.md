@@ -4,9 +4,9 @@ Three focused, local-first macOS Apps for browsing and managing conversation his
 
 ## Watch the functional demo
 
-[**Watch the 24-second demo →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-functional-demo.mp4)
+[**Watch the 20-second 1080p live UI demo →**](https://github.com/czxxxczx73-cell/chat-session-managers/releases/download/v2.0.1/chat-session-managers-demo-v2.mp4)
 
-The video shows real search, source and status filters, multi-select batch archive, restore, and the recoverable backup warning shown before delete. It uses isolated fictional data.
+The video shows real search, source and status filters, multi-select batch archive, restore, and the recoverable backup warning shown before delete. It uses isolated fictional data. A lightweight animated preview is embedded directly in the README, and the full experience is available on the [bilingual product page](https://czxxxczx73-cell.github.io/chat-session-managers/).
 
 ## Current highlights
 
@@ -23,7 +23,7 @@ The video shows real search, source and status filters, multi-select batch archi
 ## Download
 
 - `Chat-Session-Managers-v<version>-universal.zip` — the Universal 2 App package
-- `chat-session-managers-functional-demo.mp4` — the 24-second product walkthrough
+- `chat-session-managers-demo-v2.mp4` — the 20-second 1080p live UI walkthrough
 
 Requires Python 3.9+ installed locally (used only for the standard-library session service, not for the window itself). The Apps are ad-hoc signed, so macOS may require right-clicking and choosing **Open** once.
 
